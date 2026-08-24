@@ -6,30 +6,26 @@
 <title>Ampcontrol — LinkedIn wall</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Kanit:ital,wght@0,300;0,500;0,600;1,600;1,700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Kanit:ital,wght@0,300;0,400;0,500;0,600;1,600;1,700&display=swap" rel="stylesheet">
 
 <script>
 /* ─────────────────────────────────────────────────────────────
    EDIT THIS BLOCK ONLY.
 
-   postsPerScreen   how many posts are on screen at once (1-4).
+   This version renders its own cards from posts.json. There is no
+   LinkedIn iframe any more, which means nothing is cropped: every
+   image, carousel slide and video is shown whole, letterboxed into
+   an identical media area on each card.
 
-   layout           'columns' puts the posts side by side as tall
-                    cards — right for a landscape screen.
-                    'rows' stacks them — right for a portrait screen.
-                    'auto' picks based on the screen's shape.
+   postsPerScreen   how many posts share a screen (1-4).
+   layout           'columns' side by side, 'rows' stacked,
+                    'auto' picks by screen shape.
+   secondsPerScreen how long each screenful holds.
+   slideSeconds     how long each carousel slide holds.
+   playVideo        false shows the poster frame instead of playing.
+   maxCopyLines     lines of post copy above the media.
 
-   hideEmbedHeader  LinkedIn repeats the same logo / name / follower
-                    count / LinkedIn wordmark above every post. Your
-                    own header already says whose posts these are, so
-                    cropping it off frees roughly 150px for the image.
-                    Set to false to keep it.
-
-   headerCrop       how much to crop, in px at native embed width.
-                    Raise it if a sliver of the header still shows.
-
-   Every card is the same size and each embed is sized to fill its
-   card exactly, so there is nothing else to hand-tune here.
+   Press D on a keyboard to see which media loaded and which failed.
    ───────────────────────────────────────────────────────────── */
 const CONFIG = {
   feedApi: './posts.json',
@@ -37,11 +33,11 @@ const CONFIG = {
   title: 'Latest from LinkedIn',
   postsPerScreen: 3,
   layout: 'columns',
-  hideEmbedHeader: true,
-  headerCrop: 150,
-  secondsPerScreen: 20,
+  secondsPerScreen: 24,
+  slideSeconds: 4,
   refreshMinutes: 15,
-  collapseLongText: true
+  playVideo: true,
+  maxCopyLines: 4
 };
 </script>
 
@@ -52,6 +48,9 @@ const CONFIG = {
     --orange: #F06F0B;
     --paper:  #FFFFFF;
     --ink:    rgba(255,255,255,.62);
+    --body:   #1B2C47;
+    --muted:  #5B6B85;
+    --mat:    #EDF1F7;
   }
 
   *{ box-sizing:border-box; margin:0; padding:0; }
@@ -91,7 +90,6 @@ const CONFIG = {
 
   .panel{ position:relative; }
 
-  /* one .slide = one screenful of N posts */
   .slide{
     position:absolute; inset:0;
     display:grid; gap:clamp(10px,1.6vmin,26px);
@@ -99,24 +97,73 @@ const CONFIG = {
   }
   .slide.is-live{ opacity:1; }
 
-  /* each card crops its embed to an identical height */
+  /* ── the card: copy on top, media below, footer last ── */
   .card{
     position:relative; overflow:hidden;
-    background:var(--paper);
+    background:var(--paper); color:var(--body);
     border-radius:clamp(8px,1.1vmin,18px);
     box-shadow:0 clamp(5px,.9vmin,16px) clamp(18px,3vmin,48px) rgba(2,20,52,.34);
+    display:grid; grid-template-rows:auto 1fr auto;
+    padding:clamp(14px,1.7vmin,26px);
+    gap:clamp(10px,1.2vmin,18px);
   }
-  .card .scaler{
-    position:absolute; top:0; left:0;
-    transform-origin:top left;
-  }
-  .card iframe{ display:block; width:100%; height:100%; border:0; }
 
-  /* fades the hard crop edge so it reads as designed, not broken */
-  .card::after{
-    content:''; position:absolute; left:0; right:0; bottom:0;
-    height:clamp(18px,2.4vmin,40px); pointer-events:none;
-    background:linear-gradient(to bottom, rgba(255,255,255,0), rgba(255,255,255,.92));
+  .copy{
+    font-weight:400; line-height:1.36;
+    font-size:clamp(13px,1.45vmin,21px);
+    display:-webkit-box; -webkit-box-orient:vertical; overflow:hidden;
+    -webkit-line-clamp:var(--clamp, 4);
+  }
+  /* a post with no media gets the whole card for its words */
+  .card[data-media="none"] .copy{
+    -webkit-line-clamp:16;
+    font-size:clamp(15px,1.75vmin,26px);
+    line-height:1.42;
+  }
+
+  /* the media area: identical on every card, nothing ever cropped */
+  .media{
+    position:relative; overflow:hidden;
+    border-radius:clamp(5px,.7vmin,11px);
+    background:var(--mat);
+    display:grid; place-items:center;
+  }
+  .card[data-media="none"] .media{ display:none; }
+
+  .media img, .media video{
+    max-width:100%; max-height:100%;
+    width:auto; height:auto;
+    object-fit:contain;          /* letterboxed, never cropped */
+    display:block;
+  }
+  /* carousel slides stack and cross-fade in place */
+  .media .page{
+    position:absolute; inset:0;
+    display:grid; place-items:center; padding:0;
+    opacity:0; transition:opacity .5s ease;
+  }
+  .media .page.on{ opacity:1; }
+
+  .pager{
+    position:absolute; left:0; right:0; bottom:clamp(6px,.8vmin,12px);
+    display:flex; justify-content:center; gap:clamp(4px,.55vmin,8px);
+    pointer-events:none;
+  }
+  .pager i{
+    width:clamp(5px,.62vmin,9px); height:clamp(5px,.62vmin,9px);
+    border-radius:99px; background:rgba(9,32,68,.26);
+    transition:background .35s ease, width .35s ease;
+  }
+  .pager i.on{ background:var(--orange); width:clamp(15px,1.9vmin,26px); }
+
+  .foot{
+    display:flex; align-items:center; justify-content:space-between;
+    gap:12px; border-top:1px solid #E4E9F1; padding-top:clamp(7px,.85vmin,13px);
+    font-size:clamp(10px,1.1vmin,16px); font-weight:300; color:var(--muted);
+  }
+  .badge{
+    font-weight:600; font-style:italic; text-transform:uppercase;
+    letter-spacing:.09em; color:var(--orange); white-space:nowrap;
   }
 
   .notice{
@@ -125,7 +172,7 @@ const CONFIG = {
     background:var(--paper); border-radius:clamp(8px,1.1vmin,18px);
   }
   .notice b{ font-weight:600; font-style:italic; text-transform:uppercase; font-size:1.3em; }
-  .notice span{ font-weight:300; color:#5b6b85; line-height:1.5; }
+  .notice span{ font-weight:300; color:var(--muted); line-height:1.5; }
 
   .ticker{ display:flex; align-items:center; gap:clamp(12px,1.8vmin,28px); }
   .wave{ flex:1; height:clamp(18px,2.4vmin,38px); overflow:visible; }
@@ -140,9 +187,19 @@ const CONFIG = {
   }
   .dots i.on{ background:var(--orange); width:clamp(22px,2.8vmin,38px); }
 
+  /* diagnostics, D to toggle */
+  .debug{
+    position:fixed; right:14px; top:14px; z-index:99; display:none;
+    background:rgba(4,22,52,.93); color:#DCE7F7; padding:14px 16px;
+    border-radius:10px; font-size:12px; line-height:1.55; max-width:44ch;
+    font-weight:300; white-space:pre-wrap;
+  }
+  .debug.on{ display:block; }
+  .debug b{ color:var(--orange); font-weight:600; }
+
   @media (prefers-reduced-motion: reduce){
-    .slide{ transition-duration:.15s; }
-    .dots i{ transition:none; }
+    .slide, .media .page{ transition-duration:.15s; }
+    .dots i, .pager i{ transition:none; }
   }
 </style>
 </head>
@@ -168,19 +225,23 @@ const CONFIG = {
   </footer>
 </div>
 
+<div class="debug" id="debug"></div>
+
 <script>
 (function(){
   'use strict';
 
-  var EMBED_W   = 504;   // LinkedIn's native embed width
-  var EMBED_MAX = 700;   // beyond this the post looks stretched
-  var panel   = document.getElementById('panel');
-  var dotsEl  = document.getElementById('dots');
-  var slides  = [];
-  var current = [];
+  var panel  = document.getElementById('panel');
+  var dotsEl = document.getElementById('dots');
+  var dbgEl  = document.getElementById('debug');
+
+  var slides  = [];      // { el, dot, cards:[cardState] }
+  var current = [];      // urns currently built, to detect changes
   var idx = -1, started = 0, paused = false, pausedAt = 0;
-  var DUR = (CONFIG.secondsPerScreen || 20) * 1000;
+  var DUR = (CONFIG.secondsPerScreen || 24) * 1000;
+  var SLIDE_MS = Math.max(1500, (CONFIG.slideSeconds || 4) * 1000);
   var PER = Math.max(1, Math.min(4, CONFIG.postsPerScreen || 3));
+  var loadLog = [];
 
   function mode(){
     var m = CONFIG.layout || 'columns';
@@ -188,10 +249,13 @@ const CONFIG = {
     return m === 'rows' ? 'rows' : 'columns';
   }
 
+  document.documentElement.style.setProperty(
+    '--clamp', String(Math.max(1, Math.min(30, CONFIG.maxCopyLines || 4))));
+
   document.getElementById('eyebrow').textContent = CONFIG.eyebrow;
   document.getElementById('title').textContent   = CONFIG.title;
 
-  /* ── sine wave progress ─────────────────────────────── */
+  /* ── sine wave progress ── */
   var track = document.getElementById('track');
   var fill  = document.getElementById('fill');
   var d = '';
@@ -206,7 +270,7 @@ const CONFIG = {
   function drawWave(p){ fill.style.strokeDashoffset = LEN * (1 - p); }
   drawWave(0);
 
-  /* ── clock ──────────────────────────────────────────── */
+  /* ── clock ── */
   var clock = document.getElementById('clock');
   function tick(){
     clock.textContent = new Date().toLocaleString('en-AU', {
@@ -216,9 +280,7 @@ const CONFIG = {
   tick(); setInterval(tick, 20000);
 
   function notice(head, body){
-    panel.innerHTML = '';
-    dotsEl.innerHTML = '';
-    slides = [];
+    panel.innerHTML = ''; dotsEl.innerHTML = ''; slides = [];
     var n = document.createElement('div');
     n.className = 'notice';
     n.innerHTML = '<b>' + head + '</b><span>' + body + '</span>';
@@ -226,16 +288,151 @@ const CONFIG = {
   }
   notice('Connecting', 'Fetching the latest posts from LinkedIn.');
 
-  /* ── build screenfuls of PER posts each ─────────────── */
+  function when(dateStr){
+    if (!dateStr) return '';
+    var t = new Date(dateStr);
+    if (isNaN(t)) return '';
+    var days = Math.floor((Date.now() - t) / 86400000);
+    if (days <= 0) return 'Today';
+    if (days === 1) return 'Yesterday';
+    if (days < 7)  return days + ' days ago';
+    var wk = Math.floor(days / 7);
+    if (wk < 5) return wk + (wk === 1 ? ' week ago' : ' weeks ago');
+    return t.toLocaleDateString('en-AU', { day:'numeric', month:'short' });
+  }
+
+  function badgeFor(p){
+    if (p.mediaType === 'document') {
+      return p.pageCount > 1 ? p.pageCount + ' slides' : 'Document';
+    }
+    if (p.mediaType === 'video') return 'Video';
+    return '';
+  }
+
+  /* Records why a card ended up looking how it looks, for the D overlay. */
+  function log(urn, type, status){
+    loadLog.push({ urn: urn.replace(/^urn:li:\w+:/, ''), type: type, status: status });
+    if (loadLog.length > 40) loadLog.shift();
+  }
+
+  /* ── build one card ── */
+  function buildCard(p){
+    var card = document.createElement('article');
+    card.className = 'card';
+
+    var copy = document.createElement('div');
+    copy.className = 'copy';
+    copy.textContent = p.copy || p.title || '';
+    card.appendChild(copy);
+
+    var media = document.createElement('div');
+    media.className = 'media';
+    card.appendChild(media);
+
+    var state = { card: card, pages: [], pageIdx: 0, pageAt: 0, video: null };
+    var hasMedia = false;
+
+    /* video: play the highest rendition the browser accepts, poster if none */
+    if (p.mediaType === 'video' && p.video && p.video.length && CONFIG.playVideo){
+      var v = document.createElement('video');
+      v.muted = true; v.loop = true; v.playsInline = true;
+      v.setAttribute('muted',''); v.setAttribute('playsinline','');
+      v.preload = 'metadata';
+      if (p.poster) v.poster = p.poster;
+      p.video.forEach(function(s){
+        var src = document.createElement('source');
+        src.src = s.src; src.type = s.type || 'video/mp4';
+        v.appendChild(src);
+      });
+      v.addEventListener('loadeddata', function(){ log(p.urn, 'video', 'playing'); });
+      v.addEventListener('error', function(){
+        // every rendition refused: fall back to the poster still
+        log(p.urn, 'video', 'blocked, using poster');
+        v.remove();
+        if (p.poster) addImage(media, p.poster, p.urn, 'poster');
+        else degrade(card);
+      });
+      media.appendChild(v);
+      state.video = v;
+      hasMedia = true;
+
+    /* document: every slide, cross-fading */
+    } else if (p.mediaType === 'document' && p.pages && p.pages.length){
+      p.pages.forEach(function(src, i){
+        var page = document.createElement('div');
+        page.className = 'page' + (i === 0 ? ' on' : '');
+        var im = document.createElement('img');
+        im.src = src; im.alt = '';
+        im.addEventListener('load',  function(){ if (i === 0) log(p.urn, 'doc', 'slides ok'); });
+        im.addEventListener('error', function(){
+          if (i === 0) log(p.urn, 'doc', 'slides blocked');
+          page.remove();
+          state.pages = state.pages.filter(function(x){ return x !== page; });
+          if (!state.pages.length) degrade(card);
+        });
+        page.appendChild(im);
+        media.appendChild(page);
+        state.pages.push(page);
+      });
+      if (p.pages.length > 1){
+        var pager = document.createElement('div');
+        pager.className = 'pager';
+        p.pages.forEach(function(_, i){
+          var dot = document.createElement('i');
+          if (i === 0) dot.className = 'on';
+          pager.appendChild(dot);
+        });
+        media.appendChild(pager);
+        state.pager = pager;
+      }
+      hasMedia = true;
+
+    /* plain image, or a video poster when playback is off */
+    } else {
+      var src2 = p.image || (p.mediaType === 'video' ? p.poster : null);
+      if (src2){ addImage(media, src2, p.urn, p.mediaType); hasMedia = true; }
+    }
+
+    card.setAttribute('data-media', hasMedia ? p.mediaType : 'none');
+    if (!hasMedia) log(p.urn, p.mediaType || 'text', 'no media, copy only');
+
+    var foot = document.createElement('div');
+    foot.className = 'foot';
+    var left  = document.createElement('span');
+    left.textContent = when(p.date);
+    var right = document.createElement('span');
+    right.className = 'badge';
+    right.textContent = badgeFor(p);
+    foot.appendChild(left); foot.appendChild(right);
+    card.appendChild(foot);
+
+    return state;
+  }
+
+  function addImage(media, src, urn, type){
+    var im = document.createElement('img');
+    im.src = src; im.alt = '';
+    im.addEventListener('load',  function(){ log(urn, type, 'image ok'); });
+    im.addEventListener('error', function(){
+      log(urn, type, 'image blocked');
+      im.remove();
+      degrade(im.closest('.card'));
+    });
+    media.appendChild(im);
+  }
+
+  /* media refused to load: give the words the whole card instead of
+     leaving a grey hole where a picture should be */
+  function degrade(card){
+    if (card) card.setAttribute('data-media', 'none');
+  }
+
+  /* ── build all screenfuls ── */
   function build(posts){
-    panel.innerHTML = '';
-    dotsEl.innerHTML = '';
-    slides = [];
+    panel.innerHTML = ''; dotsEl.innerHTML = ''; slides = []; loadLog = [];
 
     var pages = [];
     for (var i = 0; i < posts.length; i += PER) pages.push(posts.slice(i, i + PER));
-
-    // avoid a lonely final screen with one card on it
     if (pages.length > 1 && pages[pages.length - 1].length < PER){
       var tail = pages.pop();
       pages[pages.length - 1] = pages[pages.length - 1].concat(tail).slice(-PER);
@@ -246,42 +443,20 @@ const CONFIG = {
       slide.className = 'slide';
       applyGrid(slide);
 
-      page.forEach(function(p, j){
-        var card = document.createElement('div');
-        card.className = 'card';
-
-        var scaler = document.createElement('div');
-        scaler.className = 'scaler';
-
-        var f = document.createElement('iframe');
-        f.src = 'https://www.linkedin.com/embed/feed/update/' + p.urn +
-                (CONFIG.collapseLongText ? '?collapsed=1' : '');
-        f.setAttribute('title', p.title || 'LinkedIn post');
-        f.setAttribute('scrolling', 'no');
-        f.setAttribute('frameborder', '0');
-        f.setAttribute('allowfullscreen', '');
-        f.setAttribute('allow', 'encrypted-media *; autoplay');
-        scaler.appendChild(f);
-
-        card.appendChild(scaler);
-        slide.appendChild(card);
+      var cards = [];
+      page.forEach(function(p){
+        var st = buildCard(p);
+        slide.appendChild(st.card);
+        cards.push(st);
       });
-
-      // pad a short page so the grid keeps its shape
-      for (var k = page.length; k < PER; k++){
-        var blank = document.createElement('div');
-        slide.appendChild(blank);
-      }
+      for (var k = page.length; k < PER; k++) slide.appendChild(document.createElement('div'));
 
       panel.appendChild(slide);
-
       var dot = document.createElement('i');
       dotsEl.appendChild(dot);
-
-      slides.push({ el: slide, dot: dot });
+      slides.push({ el: slide, dot: dot, cards: cards });
     });
 
-    layout();
     idx = -1;
     show(0);
   }
@@ -296,70 +471,63 @@ const CONFIG = {
     }
   }
 
-  /* Every card is the same size, so every embed matches by construction.
-     Where the card is at least as wide as LinkedIn's native embed we render
-     at the card's own width — no magnification, so it stays sharp and more
-     of the post fits. Narrower than that, we render at 504 and scale down,
-     because LinkedIn's embed gets cramped below about 400px. */
-  function layout(){
-    var i, slidesEls = panel.querySelectorAll('.slide');
-    for (i = 0; i < slidesEls.length; i++) applyGrid(slidesEls[i]);
-
-    var cards = panel.querySelectorAll('.card');
-    for (i = 0; i < cards.length; i++){
-      var w = cards[i].clientWidth;
-      var h = cards[i].clientHeight;
-      var s = cards[i].querySelector('.scaler');
-      if (!s || !w || !h) continue;
-
-      var k, sw, sh;
-      if (w >= EMBED_W){
-        k  = 1;
-        sw = Math.min(w, EMBED_MAX);
-        sh = h;
-        if (sw < w){ k = w / sw; sh = h / k; }
-      } else {
-        k  = w / EMBED_W;
-        sw = EMBED_W;
-        sh = h / k;
-      }
-
-      /* Slide the embed up so its repeated header sits above the card's
-         top edge, and render it that much taller so the bottom still
-         fills. The card's overflow does the cropping. */
-      var crop = CONFIG.hideEmbedHeader ? (CONFIG.headerCrop || 150) : 0;
-      sh += crop;
-
-      s.style.width  = Math.round(sw) + 'px';
-      s.style.height = Math.round(sh) + 'px';
-      s.style.top    = Math.round(-crop * k) + 'px';
-      s.style.transform = 'scale(' + k + ')';
-    }
-  }
-  window.addEventListener('resize', layout);
+  window.addEventListener('resize', function(){
+    var els = panel.querySelectorAll('.slide');
+    for (var i = 0; i < els.length; i++) applyGrid(els[i]);
+  });
 
   function show(n){
     if (!slides.length) return;
     idx = (n + slides.length) % slides.length;
     slides.forEach(function(s, i){
-      s.el.classList.toggle('is-live', i === idx);
-      s.dot.classList.toggle('on', i === idx);
+      var live = i === idx;
+      s.el.classList.toggle('is-live', live);
+      s.dot.classList.toggle('on', live);
+      s.cards.forEach(function(c){
+        if (!c.video) return;
+        if (live){ var pr = c.video.play(); if (pr && pr.catch) pr.catch(function(){}); }
+        else c.video.pause();
+      });
+      // restart carousels from slide one each time the screen comes round
+      if (live) s.cards.forEach(function(c){
+        if (c.pages.length) setPage(c, 0);
+        c.pageAt = performance.now();
+      });
     });
     started = performance.now();
     drawWave(0);
+  }
+
+  function setPage(c, n){
+    if (!c.pages.length) return;
+    c.pageIdx = (n + c.pages.length) % c.pages.length;
+    c.pages.forEach(function(p, i){ p.classList.toggle('on', i === c.pageIdx); });
+    if (c.pager){
+      var dots = c.pager.children;
+      for (var i = 0; i < dots.length; i++) dots[i].classList.toggle('on', i === c.pageIdx);
+    }
   }
 
   function frame(now){
     if (!paused && slides.length){
       var p = Math.min((now - started) / DUR, 1);
       drawWave(p);
+
+      var live = slides[idx];
+      if (live) live.cards.forEach(function(c){
+        if (c.pages.length > 1 && now - c.pageAt >= SLIDE_MS){
+          c.pageAt = now;
+          setPage(c, c.pageIdx + 1);
+        }
+      });
+
       if (p >= 1) show(idx + 1);
     }
     requestAnimationFrame(frame);
   }
   requestAnimationFrame(frame);
 
-  /* ── poll posts.json ────────────────────────────────── */
+  /* ── poll posts.json ── */
   function sameList(a, b){
     return a.length === b.length && a.every(function(v, i){ return v === b[i]; });
   }
@@ -372,16 +540,13 @@ const CONFIG = {
         if (!posts.length){
           if (!slides.length){
             notice('No posts yet',
-                   'posts.json loaded but had no LinkedIn posts in it. ' +
-                   'Check the FEED_URL secret and re-run the Action.');
+                   'posts.json loaded but had no posts in it. Check the FEED_URL ' +
+                   'secret, then run the Refresh LinkedIn feed action.');
           }
           return;
         }
         var urns = posts.map(function(p){ return p.urn; });
-        if (!sameList(urns, current)){
-          current = urns;
-          build(posts);
-        }
+        if (!sameList(urns, current)){ current = urns; build(posts); }
       })
       .catch(function(){
         if (!slides.length){
@@ -390,14 +555,28 @@ const CONFIG = {
         }
       });
   }
-
   refresh();
   setInterval(refresh, Math.max(5, CONFIG.refreshMinutes || 15) * 60000);
 
-  /* ── manual control while testing ───────────────────── */
+  /* ── keyboard: arrows step, space pauses, D shows diagnostics ── */
+  function renderDebug(){
+    var counts = {};
+    loadLog.forEach(function(l){ counts[l.status] = (counts[l.status] || 0) + 1; });
+    var lines = ['<b>Media status</b>'];
+    Object.keys(counts).forEach(function(k){ lines.push(counts[k] + ' × ' + k); });
+    lines.push('');
+    lines.push('<b>Per post</b>');
+    loadLog.forEach(function(l){ lines.push(l.urn.slice(-6) + '  ' + l.type + '  ' + l.status); });
+    dbgEl.innerHTML = lines.join('\n');
+  }
+
   document.addEventListener('keydown', function(e){
     if (e.key === 'ArrowRight') show(idx + 1);
     else if (e.key === 'ArrowLeft') show(idx - 1);
+    else if (e.key === 'd' || e.key === 'D'){
+      dbgEl.classList.toggle('on');
+      if (dbgEl.classList.contains('on')) renderDebug();
+    }
     else if (e.key === ' '){
       e.preventDefault();
       if (paused){ started += performance.now() - pausedAt; paused = false; }

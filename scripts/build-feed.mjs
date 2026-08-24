@@ -1,41 +1,45 @@
 /**
- * Ampcontrol LinkedIn signage — feed indexer
+ * Ampcontrol LinkedIn signage — feed indexer v2
  *
- * Reads the rss.app feed, pulls the LinkedIn permalink out of each item,
- * converts it to a post URN, checks the post is actually embeddable, and
- * writes posts.json at the repo root.
+ * Reads the rss.app feed, extracts each post's URN, then fetches LinkedIn's
+ * embed page for every post to pull out the real media URLs and post copy.
  *
- * The feed URL comes from the FEED_URL repository secret.
+ * Writes an enriched posts.json that the signage page renders directly —
+ * no LinkedIn iframes, full control over layout.
+ *
+ * Post types and what gets extracted:
+ *   image    -> image-shrink_1280 URL
+ *   video    -> videocover-high poster + mp4 sources (360/640/720p)
+ *   document -> coverPages array (all slides at 480px) + page count
+ *   text     -> og:description only
  */
 
 import { writeFile, readFile } from 'node:fs/promises';
 
 const FEED_URL  = process.env.FEED_URL;
-const MAX_POSTS = 12;     // a few spare, so unembeddable ones can be dropped
+const MAX_POSTS = 12;
 const OUT       = 'posts.json';
 
 const TYPES = { activity: 'activity', share: 'share', ugcpost: 'ugcPost' };
-const UA = 'Mozilla/5.0 (compatible; ampcontrol-signage/1.0)';
+const UA = 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 ' +
+           '(KHTML, like Gecko) Chrome/124.0 Safari/537.36';
 
-function toUrn(input) {
+/* ── feed parsing (unchanged) ── */
+
+export function toUrn(input) {
   const s = String(input || '').trim();
   let m;
-
   m = s.match(/urn:li:(activity|share|ugcPost):(\d+)/i);
   if (m) return 'urn:li:' + TYPES[m[1].toLowerCase()] + ':' + m[2];
-
   m = s.match(/-(activity|share|ugcPost)-(\d+)/i);
   if (m) return 'urn:li:' + TYPES[m[1].toLowerCase()] + ':' + m[2];
-
   return null;
 }
 
 function unwrap(str) {
   return String(str || '')
-    .replace(/^<!\[CDATA\[/, '')
-    .replace(/\]\]>$/, '')
-    .replace(/&amp;/g, '&')
-    .trim();
+    .replace(/^<!\[CDATA\[/, '').replace(/\]\]>$/, '')
+    .replace(/&amp;/g, '&').trim();
 }
 
 function pick(block, tag) {
@@ -43,48 +47,163 @@ function pick(block, tag) {
   return m ? unwrap(m[1]) : '';
 }
 
-/**
- * Ask LinkedIn for the embed and see whether it actually renders.
- * Returns true / false / null, where null means "couldn't tell".
- * Never returns false on a network problem — better to show a post that
- * might be broken than to silently empty the screens.
- */
-async function embeddable(urn) {
+/* ── HTML entity decoding ── */
+
+export function decode(s) {
+  return String(s || '')
+    .replace(/&#x([0-9a-f]+);/gi, (_, h) => String.fromCodePoint(parseInt(h, 16)))
+    .replace(/&#(\d+);/g, (_, d) => String.fromCodePoint(parseInt(d, 10)))
+    .replace(/&quot;/g, '"').replace(/&apos;/g, "'")
+    .replace(/&lt;/g, '<').replace(/&gt;/g, '>')
+    .replace(/&nbsp;/g, ' ').replace(/&amp;/g, '&');
+}
+
+/* ── extract media from embed page ── */
+
+function ogMeta(html, prop) {
+  const m = html.match(
+    new RegExp('<meta[^>]+(?:property|name)=["\']' + prop + '["\'][^>]+content=["\']([^"\']*)', 'i')
+  );
+  return m ? decode(m[1]) : null;
+}
+
+/** Strip HTML tags, collapse whitespace, trim. */
+export function stripHtml(s) {
+  return String(s || '').replace(/<[^>]+>/g, ' ').replace(/\s+/g, ' ').trim();
+}
+
+export function extractMedia(html) {
+  const out = { type: 'text', image: null, video: null, poster: null, pages: null, pageCount: 0 };
+
+  // Image posts: image-shrink_1280 in raw HTML
+  const imgMatch = html.match(
+    /https:\/\/media\.licdn\.com\/dms\/image\/[^"'\\\s<>)]*image-shrink_1280[^"'\\\s<>)]+/i
+  );
+  if (imgMatch) {
+    out.type = 'image';
+    out.image = decode(imgMatch[0]);
+    return out;
+  }
+
+  // Video posts: data-sources JSON array + videocover-high
+  const videoSrc = html.match(
+    /https:\/\/(?:dms|media)\.licdn\.com\/[^"'\\\s<>)]*(?:playlist\/vid|mp4-\d+p)[^"'\\\s<>)]+/i
+  );
+  const posterSrc = html.match(
+    /https:\/\/media\.licdn\.com\/dms\/image\/[^"'\\\s<>)]*videocover-high[^"'\\\s<>)]+/i
+  );
+  if (videoSrc || posterSrc) {
+    out.type = 'video';
+    out.poster = posterSrc ? decode(posterSrc[0]) : null;
+
+    // Extract all video renditions from data-sources
+    const dsMatch = html.match(/data-sources="([^"]+)"/i);
+    if (dsMatch) {
+      try {
+        const sources = JSON.parse(decode(dsMatch[1]));
+        // Pick highest bitrate
+        sources.sort((a, b) => (b['data-bitrate'] || 0) - (a['data-bitrate'] || 0));
+        out.video = sources.map(s => ({ src: s.src, type: s.type || 'video/mp4' }));
+      } catch { /* fall through to single URL */ }
+    }
+    if (!out.video && videoSrc) {
+      out.video = [{ src: decode(videoSrc[0]), type: 'video/mp4' }];
+    }
+    return out;
+  }
+
+  // Document posts: coverPages array in data-native-document-config
+  const docConfig = html.match(/data-native-document-config="([^"]+)"/i);
+  if (docConfig) {
+    out.type = 'document';
+    try {
+      const config = JSON.parse(decode(docConfig[1]));
+      if (config.doc && config.doc.coverPages) {
+        out.pages = config.doc.coverPages
+          .filter(p => p.type === 'image' && p.config && p.config.src)
+          .map(p => p.config.src);
+        out.pageCount = out.pages.length;
+        out.image = out.pages[0] || null;
+      }
+    } catch (e) {
+      console.log('  doc config parse failed: ' + e.message);
+    }
+    // Fallback: grab cover image from raw HTML
+    if (!out.image) {
+      const coverMatch = html.match(
+        /https:\/\/media\.licdn\.com\/dms\/image\/[^"'\\\s<>)]*document-cover[^"'\\\s<>)]+/i
+      );
+      if (coverMatch) out.image = decode(coverMatch[0]);
+    }
+    return out;
+  }
+
+  return out;
+}
+
+/* ── enrich each post by fetching its embed page ── */
+
+async function enrich(post) {
   try {
-    const res = await fetch('https://www.linkedin.com/embed/feed/update/' + urn, {
-      headers: { 'user-agent': UA, accept: 'text/html' },
+    const res = await fetch('https://www.linkedin.com/embed/feed/update/' + post.urn, {
+      headers: { 'user-agent': UA, accept: 'text/html', 'accept-language': 'en-AU,en;q=0.9' },
       redirect: 'follow'
     });
-
-    if (res.status === 404 || res.status === 410) return false;
-    if (!res.ok) return null;
-
+    if (!res.ok) {
+      console.log('  ' + post.urn + ': embed returned ' + res.status);
+      return post;
+    }
     const html = await res.text();
 
-    // Bounced to a login or checkpoint page — tells us nothing about the post
-    if (/authwall|checkpoint\/challenge|<title>[^<]*Sign Up[^<]*<\/title>/i.test(html)) {
-      return null;
+    // Dead post check
+    const title = decode((html.match(/<title[^>]*>([\s\S]*?)<\/title>/i) || ['', ''])[1]).trim();
+    if (/this (post|content) (is|isn.t|is no longer)/i.test(title) ||
+        res.status === 404 || res.status === 410) {
+      console.log('  ' + post.urn + ': dead post');
+      post._dead = true;
+      return post;
     }
 
-    if (/(post|content|page)\s+(is\s+)?(not\s+available|unavailable|no longer available)|couldn.t find this|isn.t available/i.test(html)) {
-      return false;
+    // Copy: the RSS description carries the full post text and is reliable.
+    // og:description is sometimes near-empty (one post returned 2 chars), so
+    // it is only a fallback for when the feed gave us nothing.
+    const desc = ogMeta(html, 'og:description') || '';
+    if (!post.copy || post.copy.length < 20) {
+      if (desc.length > post.copy.length) post.copy = desc;
     }
 
-    return true;
-  } catch {
-    return null;
+    // Post title from page title (strip " | LinkedIn" suffix)
+    const pageTitle = ogMeta(html, 'og:title') || title;
+    if (pageTitle) post.title = pageTitle.replace(/\s*\|\s*LinkedIn\s*$/i, '').trim();
+
+    // Media
+    const media = extractMedia(html);
+    post.mediaType = media.type;
+    if (media.image)     post.image     = media.image;
+    if (media.poster)    post.poster    = media.poster;
+    if (media.video)     post.video     = media.video;
+    if (media.pages)     post.pages     = media.pages;
+    if (media.pageCount) post.pageCount = media.pageCount;
+
+    console.log('  ' + post.urn + ': ' + media.type +
+      (media.image ? ' img' : '') +
+      (media.video ? ' vid×' + media.video.length : '') +
+      (media.pages ? ' pages×' + media.pages.length : ''));
+
+  } catch (err) {
+    console.log('  ' + post.urn + ': enrich failed — ' + err.message);
   }
+  return post;
 }
+
+/* ── main ── */
 
 async function previous() {
-  try {
-    return JSON.parse(await readFile(OUT, 'utf8'));
-  } catch {
-    return null;
-  }
+  try { return JSON.parse(await readFile(OUT, 'utf8')); }
+  catch { return null; }
 }
 
-async function main() {
+export async function main() {
   if (!FEED_URL) {
     console.error('FEED_URL is not set. Add it as a repository secret.');
     process.exit(1);
@@ -101,12 +220,17 @@ async function main() {
   for (const item of items) {
     const urn = toUrn(pick(item, 'link')) || toUrn(pick(item, 'guid'));
     if (!urn || seen.has(urn)) continue;
-
     seen.add(urn);
+
+    // Get copy from RSS description (HTML with links)
+    const descHtml = pick(item, 'description');
+
     found.push({
       urn,
-      title: pick(item, 'title').slice(0, 180),
-      date:  pick(item, 'pubDate')
+      title: pick(item, 'title').slice(0, 180) || '',
+      date:  pick(item, 'pubDate'),
+      copy:  stripHtml(descHtml).slice(0, 600) || '',
+      mediaType: 'text'
     });
 
     if (found.length >= MAX_POSTS) break;
@@ -114,26 +238,17 @@ async function main() {
 
   console.log('Found ' + found.length + ' posts in the feed.');
 
-  const verdicts = await Promise.all(found.map(p => embeddable(p.urn)));
-
-  const rejected = [];
-  const kept = found.filter((p, i) => {
-    if (verdicts[i] === false) { rejected.push(p.urn); return false; }
-    return true;
-  });
-
-  let posts = kept;
-
-  // Safety net: if the check threw out most of the feed, it's far more likely
-  // that LinkedIn changed its error page than that every post broke at once.
-  if (found.length >= 4 && kept.length < found.length / 2) {
-    console.warn('Embed check rejected ' + rejected.length + ' of ' + found.length +
-                 ' posts — that looks wrong, so ignoring the check this run.');
-    posts = found;
-  } else if (rejected.length) {
-    console.log('Dropped ' + rejected.length + ' post(s) that will not embed: ' +
-                rejected.join(', '));
+  // Enrich each post with media from the embed page
+  console.log('Enriching posts from embed pages...');
+  const enriched = [];
+  for (const post of found) {
+    enriched.push(await enrich(post));
   }
+
+  // Drop dead posts
+  const posts = enriched.filter(p => !p._dead);
+  const deadCount = enriched.length - posts.length;
+  if (deadCount) console.log('Dropped ' + deadCount + ' dead post(s).');
 
   if (!posts.length) {
     const old = await previous();
@@ -149,10 +264,16 @@ async function main() {
     JSON.stringify({ ok: true, updated: new Date().toISOString(), posts }, null, 2) + '\n'
   );
 
-  console.log('Wrote ' + posts.length + ' posts.');
+  console.log('Wrote ' + posts.length + ' posts (' +
+    posts.filter(p => p.mediaType === 'image').length + ' image, ' +
+    posts.filter(p => p.mediaType === 'video').length + ' video, ' +
+    posts.filter(p => p.mediaType === 'document').length + ' document, ' +
+    posts.filter(p => p.mediaType === 'text').length + ' text).');
 }
 
-main().catch(err => {
-  console.error(err.message);
-  process.exit(1);
-});
+const isDirect = process.argv[1] && import.meta.url.endsWith(
+  process.argv[1].replace(/^.*[\\/]/, '')
+);
+if (isDirect) {
+  main().catch(err => { console.error(err.message); process.exit(1); });
+}
