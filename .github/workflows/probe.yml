@@ -1,0 +1,29 @@
+name: Probe LinkedIn extraction
+
+# Manual only. Doesn't touch posts.json, doesn't deploy, doesn't commit.
+# Delete this file once we know the answer.
+on:
+  workflow_dispatch:
+    inputs:
+      urn:
+        description: 'Post URN to probe (blank = the YAKKA carousel)'
+        required: false
+        default: 'urn:li:activity:7496053505011589121'
+
+permissions:
+  contents: read
+
+jobs:
+  probe:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: Probe
+        env:
+          PROBE_URN: ${{ inputs.urn }}
+        run: node scripts/probe-embed.mjs
