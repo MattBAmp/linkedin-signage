@@ -1,0 +1,32 @@
+name: Keepalive
+
+# GitHub disables scheduled workflows after 60 days of repository inactivity,
+# and commits made by the Actions bot do not reset that timer. Without this,
+# the feed would quietly stop refreshing about two months from now with no
+# error and no notification.
+#
+# This runs monthly and pokes the repository in a way that does count.
+
+on:
+  schedule:
+    - cron: '19 3 1 * *'      # 03:19 UTC on the 1st of each month
+  workflow_dispatch:
+
+permissions:
+  actions: write
+  contents: write
+
+jobs:
+  keepalive:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - uses: gautamkrishnar/keepalive-workflow@v2
+        with:
+          use_api: true
+          committer_username: 'github-actions[bot]'
+          committer_email: '41898282+github-actions[bot]@users.noreply.github.com'
+          commit_message: 'Keepalive: prevent scheduled workflows being disabled'
