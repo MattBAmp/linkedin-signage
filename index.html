@@ -19,8 +19,17 @@
                     'rows' stacks them — right for a portrait screen.
                     'auto' picks based on the screen's shape.
 
+   hideEmbedHeader  LinkedIn repeats the same logo / name / follower
+                    count / LinkedIn wordmark above every post. Your
+                    own header already says whose posts these are, so
+                    cropping it off frees roughly 150px for the image.
+                    Set to false to keep it.
+
+   headerCrop       how much to crop, in px at native embed width.
+                    Raise it if a sliver of the header still shows.
+
    Every card is the same size and each embed is sized to fill its
-   card exactly, so there is nothing to hand-tune here.
+   card exactly, so there is nothing else to hand-tune here.
    ───────────────────────────────────────────────────────────── */
 const CONFIG = {
   feedApi: './posts.json',
@@ -28,6 +37,8 @@ const CONFIG = {
   title: 'Latest from LinkedIn',
   postsPerScreen: 3,
   layout: 'columns',
+  hideEmbedHeader: true,
+  headerCrop: 150,
   secondsPerScreen: 20,
   refreshMinutes: 15,
   collapseLongText: true
@@ -313,8 +324,15 @@ const CONFIG = {
         sh = h / k;
       }
 
+      /* Slide the embed up so its repeated header sits above the card's
+         top edge, and render it that much taller so the bottom still
+         fills. The card's overflow does the cropping. */
+      var crop = CONFIG.hideEmbedHeader ? (CONFIG.headerCrop || 150) : 0;
+      sh += crop;
+
       s.style.width  = Math.round(sw) + 'px';
       s.style.height = Math.round(sh) + 'px';
+      s.style.top    = Math.round(-crop * k) + 'px';
       s.style.transform = 'scale(' + k + ')';
     }
   }
