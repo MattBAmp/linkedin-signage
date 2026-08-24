@@ -75,13 +75,26 @@ export function stripHtml(s) {
 export function extractMedia(html) {
   const out = { type: 'text', image: null, video: null, poster: null, pages: null, pageCount: 0 };
 
-  // Image posts: image-shrink_1280 in raw HTML
-  const imgMatch = html.match(
-    /https:\/\/media\.licdn\.com\/dms\/image\/[^"'\\\s<>)]*image-shrink_1280[^"'\\\s<>)]+/i
-  );
-  if (imgMatch) {
+  // Image posts. LinkedIn serves several size tokens depending on the source
+  // file — image-shrink_1280, image-shrink_800, feedshare-shrink_2048 and so
+  // on. Matching only one of them silently turned those posts into text-only
+  // cards, so collect every candidate and keep the largest.
+  const imgCandidates = (html.match(
+    /https:\/\/media\.licdn\.com\/dms\/image\/[^"'\\\s<>)]+/gi
+  ) || [])
+    .map(decode)
+    .filter(u => /(?:image|feedshare)-(?:shrink|scale)_/i.test(u))
+    .filter(u => !/company-logo|videocover|document-cover|profile-displayphoto/i.test(u));
+
+  if (imgCandidates.length) {
+    const px = u => {
+      const m = u.match(/_(\d+)(?:x(\d+))?/);
+      return m ? Math.max(Number(m[1] || 0), Number(m[2] || 0)) : 0;
+    };
+    imgCandidates.sort((a, b) => px(b) - px(a));
     out.type = 'image';
-    out.image = decode(imgMatch[0]);
+    out.image = imgCandidates[0];
+    out.imageWidth = px(imgCandidates[0]) || null;
     return out;
   }
 

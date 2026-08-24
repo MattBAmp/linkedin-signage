@@ -114,6 +114,11 @@ const CONFIG = {
     display:-webkit-box; -webkit-box-orient:vertical; overflow:hidden;
     -webkit-line-clamp:var(--clamp, 4);
   }
+  /* With the media hidden, the card has only two children left, so the
+     three-row template would drop the footer into the middle row and leave
+     dead space under it. Two rows, copy taking the slack. */
+  .card[data-media="none"]{ grid-template-rows:1fr auto; }
+
   /* a post with no media gets the whole card for its words */
   .card[data-media="none"] .copy{
     -webkit-line-clamp:16;
