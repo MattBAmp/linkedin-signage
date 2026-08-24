@@ -1,0 +1,310 @@
+<!DOCTYPE html>
+<html lang="en-AU">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Ampcontrol — LinkedIn wall</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Kanit:ital,wght@0,300;0,500;0,600;1,600;1,700&display=swap" rel="stylesheet">
+
+<script>
+/* ─────────────────────────────────────────────────────────────
+   EDIT THIS BLOCK ONLY. One value is mandatory: feedApi.
+
+   feedApi       where the post list lives. On GitHub Pages this is
+                 just the file the Action writes, sitting next to
+                 this page — leave it as './posts.json'.
+
+   embedHeight   every embed renders at 504px wide and this height,
+                 then scales to fit the panel. There's no per-post
+                 tuning any more — the panel is white and so is the
+                 embed, so a slightly generous number just reads as
+                 padding. 880 suits a mixed feed; nudge it once
+                 after you've seen a week of real posts.
+   ───────────────────────────────────────────────────────────── */
+const CONFIG = {
+  feedApi: './posts.json',
+  eyebrow: 'Ampcontrol',
+  title: 'Latest from LinkedIn',
+  secondsPerPost: 18,
+  refreshMinutes: 15,       // how often to re-check the feed for new posts
+  embedHeight: 880,
+  collapseLongText: true    // first few lines + "see more"
+};
+</script>
+
+<style>
+  :root{
+    --deep:   #043D9A;
+    --blue:   #006CD3;
+    --orange: #F06F0B;
+    --paper:  #FFFFFF;
+    --ink:    rgba(255,255,255,.62);
+  }
+
+  *{ box-sizing:border-box; margin:0; padding:0; }
+  html,body{ height:100%; overflow:hidden; }
+
+  body{
+    background:linear-gradient(-40deg, var(--deep) 0%, var(--blue) 68%, #0B84E8 100%);
+    font-family:'Kanit', Arial, Helvetica, sans-serif;
+    color:#fff;
+    -webkit-font-smoothing:antialiased;
+  }
+  body::before{
+    content:''; position:fixed; inset:0; pointer-events:none;
+    background:radial-gradient(120% 60% at 78% -8%, rgba(255,255,255,.16), transparent 60%);
+  }
+
+  .stage{
+    position:fixed; inset:0;
+    display:grid; grid-template-rows:auto 1fr auto;
+    padding:clamp(20px,3.2vmin,52px);
+    gap:clamp(14px,2.2vmin,34px);
+  }
+
+  .brandbar{ display:flex; align-items:flex-end; justify-content:space-between; gap:24px; }
+  .eyebrow{
+    font-weight:700; font-style:italic; text-transform:uppercase;
+    letter-spacing:.14em; font-size:clamp(15px,1.7vmin,26px); color:var(--orange);
+  }
+  .title{
+    font-weight:600; font-style:italic; text-transform:uppercase;
+    letter-spacing:.02em; line-height:.98; font-size:clamp(28px,4.6vmin,72px);
+  }
+  .clock{
+    font-weight:300; font-size:clamp(14px,1.6vmin,24px); color:var(--ink);
+    letter-spacing:.05em; white-space:nowrap; font-variant-numeric:tabular-nums;
+  }
+
+  .panel{
+    position:relative; background:var(--paper);
+    border-radius:clamp(10px,1.3vmin,22px); overflow:hidden;
+    box-shadow:0 clamp(8px,1.4vmin,26px) clamp(30px,5vmin,80px) rgba(2,20,52,.42);
+  }
+
+  .slide{ position:absolute; inset:0; opacity:0; transition:opacity .7s ease; pointer-events:none; }
+  .slide.is-live{ opacity:1; }
+
+  .scaler{ position:absolute; top:50%; left:50%; transform-origin:center center; width:504px; }
+  .scaler iframe{ display:block; width:504px; height:100%; border:0; }
+
+  .notice{
+    position:absolute; inset:0; display:grid; place-content:center; text-align:center;
+    padding:10%; gap:12px; color:var(--deep);
+  }
+  .notice b{ font-weight:600; font-style:italic; text-transform:uppercase; font-size:1.4em; }
+  .notice span{ font-weight:300; color:#5b6b85; line-height:1.5; }
+
+  .ticker{ display:flex; align-items:center; gap:clamp(14px,2vmin,30px); }
+  .wave{ flex:1; height:clamp(26px,3.4vmin,56px); overflow:visible; }
+  .wave .track{ fill:none; stroke:rgba(255,255,255,.22); stroke-width:2.5; }
+  .wave .fill{ fill:none; stroke:var(--orange); stroke-width:4.5; stroke-linecap:round; }
+
+  .dots{ display:flex; gap:clamp(6px,.9vmin,12px); }
+  .dots i{
+    display:block; width:clamp(7px,.9vmin,12px); height:clamp(7px,.9vmin,12px);
+    border-radius:99px; background:rgba(255,255,255,.3);
+    transition:background .4s ease, width .4s ease;
+  }
+  .dots i.on{ background:var(--orange); width:clamp(22px,2.8vmin,38px); }
+
+  @media (prefers-reduced-motion: reduce){
+    .slide{ transition-duration:.15s; }
+    .dots i{ transition:none; }
+  }
+</style>
+</head>
+<body>
+
+<div class="stage">
+  <header class="brandbar">
+    <div>
+      <div class="eyebrow" id="eyebrow"></div>
+      <h1 class="title" id="title"></h1>
+    </div>
+    <div class="clock" id="clock"></div>
+  </header>
+
+  <main class="panel" id="panel"></main>
+
+  <footer class="ticker">
+    <svg class="wave" id="wave" viewBox="0 0 1000 60" preserveAspectRatio="none" aria-hidden="true">
+      <path class="track" id="track"></path>
+      <path class="fill"  id="fill"></path>
+    </svg>
+    <div class="dots" id="dots"></div>
+  </footer>
+</div>
+
+<script>
+(function(){
+  'use strict';
+
+  var EMBED_W = 504;
+  var panel   = document.getElementById('panel');
+  var dotsEl  = document.getElementById('dots');
+  var slides  = [];
+  var current = [];          // urns currently on screen
+  var idx = -1, started = 0, paused = false, pausedAt = 0;
+  var DUR = (CONFIG.secondsPerPost || 18) * 1000;
+
+  document.getElementById('eyebrow').textContent = CONFIG.eyebrow;
+  document.getElementById('title').textContent   = CONFIG.title;
+
+  /* ── sine wave progress ─────────────────────────────── */
+  var track = document.getElementById('track');
+  var fill  = document.getElementById('fill');
+  var d = '';
+  for (var x = 0; x <= 1000; x += 4){
+    var y = 30 - 19 * Math.sin((x / 1000) * Math.PI * 5);
+    d += (x === 0 ? 'M' : 'L') + x + ' ' + y.toFixed(2) + ' ';
+  }
+  track.setAttribute('d', d);
+  fill.setAttribute('d', d);
+  var LEN = fill.getTotalLength();
+  fill.style.strokeDasharray = LEN;
+  function drawWave(p){ fill.style.strokeDashoffset = LEN * (1 - p); }
+  drawWave(0);
+
+  /* ── clock ──────────────────────────────────────────── */
+  var clock = document.getElementById('clock');
+  function tick(){
+    clock.textContent = new Date().toLocaleString('en-AU', {
+      weekday:'short', day:'numeric', month:'short', hour:'2-digit', minute:'2-digit'
+    });
+  }
+  tick(); setInterval(tick, 20000);
+
+  /* ── holding card, shown until the first feed lands ─── */
+  function notice(head, body){
+    panel.innerHTML = '';
+    dotsEl.innerHTML = '';
+    var n = document.createElement('div');
+    n.className = 'notice';
+    n.innerHTML = '<b>' + head + '</b><span>' + body + '</span>';
+    panel.appendChild(n);
+    slides = [];
+  }
+  notice('Connecting', 'Fetching the latest posts from LinkedIn.');
+
+  /* ── build the rotation from a list of URNs ─────────── */
+  function build(posts){
+    panel.innerHTML = '';
+    dotsEl.innerHTML = '';
+    slides = [];
+
+    posts.forEach(function(p, i){
+      var slide = document.createElement('div');
+      slide.className = 'slide';
+
+      var scaler = document.createElement('div');
+      scaler.className = 'scaler';
+      scaler.style.height = CONFIG.embedHeight + 'px';
+
+      var f = document.createElement('iframe');
+      f.src = 'https://www.linkedin.com/embed/feed/update/' + p.urn +
+              (CONFIG.collapseLongText ? '?collapsed=1' : '');
+      f.setAttribute('title', 'LinkedIn post ' + (i + 1));
+      f.setAttribute('scrolling', 'no');
+      f.setAttribute('frameborder', '0');
+      f.setAttribute('allowfullscreen', '');
+      f.setAttribute('allow', 'encrypted-media *; autoplay');
+      scaler.appendChild(f);
+
+      slide.appendChild(scaler);
+      panel.appendChild(slide);
+
+      var dot = document.createElement('i');
+      dotsEl.appendChild(dot);
+
+      slides.push({ el: slide, scaler: scaler, dot: dot });
+    });
+
+    layout();
+    idx = -1;
+    show(0);
+  }
+
+  function layout(){
+    var pw = panel.clientWidth, ph = panel.clientHeight;
+    slides.forEach(function(s){
+      var k = Math.min(pw / EMBED_W, ph / CONFIG.embedHeight);
+      s.scaler.style.transform = 'translate(-50%,-50%) scale(' + k + ')';
+    });
+  }
+  window.addEventListener('resize', layout);
+
+  function show(n){
+    if (!slides.length) return;
+    idx = (n + slides.length) % slides.length;
+    slides.forEach(function(s, i){
+      s.el.classList.toggle('is-live', i === idx);
+      s.dot.classList.toggle('on', i === idx);
+    });
+    started = performance.now();
+    drawWave(0);
+  }
+
+  function frame(now){
+    if (!paused && slides.length){
+      var p = Math.min((now - started) / DUR, 1);
+      drawWave(p);
+      if (p >= 1) show(idx + 1);
+    }
+    requestAnimationFrame(frame);
+  }
+  requestAnimationFrame(frame);
+
+  /* ── poll the Worker ────────────────────────────────── */
+  function sameList(a, b){
+    return a.length === b.length && a.every(function(v, i){ return v === b[i]; });
+  }
+
+  function refresh(){
+    fetch(CONFIG.feedApi + '?t=' + Date.now(), { cache: 'no-store' })
+      .then(function(r){ return r.json(); })
+      .then(function(data){
+        var posts = (data && data.posts) || [];
+        if (!posts.length){
+          if (!slides.length){
+            notice('No posts yet',
+                   'posts.json loaded but had no LinkedIn posts in it. ' +
+                   'Check the FEED_URL secret and re-run the Action.');
+          }
+          return;   // keep whatever is already on screen
+        }
+        var urns = posts.map(function(p){ return p.urn; });
+        if (!sameList(urns, current)){
+          current = urns;
+          build(posts);
+        }
+      })
+      .catch(function(){
+        // network blip — keep showing the current rotation
+        if (!slides.length){
+          notice('Can\u2019t reach the feed',
+                 'The player could not load posts.json. ' +
+                 'It will keep retrying.');
+        }
+      });
+  }
+
+  refresh();
+  setInterval(refresh, Math.max(5, CONFIG.refreshMinutes || 15) * 60000);
+
+  /* ── manual control while testing ───────────────────── */
+  document.addEventListener('keydown', function(e){
+    if (e.key === 'ArrowRight') show(idx + 1);
+    else if (e.key === 'ArrowLeft') show(idx - 1);
+    else if (e.key === ' '){
+      e.preventDefault();
+      if (paused){ started += performance.now() - pausedAt; paused = false; }
+      else { pausedAt = performance.now(); paused = true; }
+    }
+  });
+})();
+</script>
+</body>
+</html>
