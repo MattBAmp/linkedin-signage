@@ -1,0 +1,70 @@
+name: Refresh LinkedIn feed
+
+on:
+  # Twice an hour, deliberately off the top of the hour — GitHub's shared
+  # runners are busiest at :00 and scheduled jobs queue behind everyone else.
+  schedule:
+    - cron: '7,37 * * * *'
+  push:
+    branches: [main]
+  workflow_dispatch:        # lets you run it by hand from the Actions tab
+
+permissions:
+  contents: write           # to commit posts.json
+  pages: write              # to publish the site
+  id-token: write           # required by the Pages deploy action
+
+concurrency:
+  group: pages
+  cancel-in-progress: false
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: Build posts.json
+        env:
+          FEED_URL: ${{ secrets.FEED_URL }}
+        run: node scripts/build-feed.mjs
+
+      # Committing keeps a history and gives the script a last-known-good
+      # list to fall back on. If it fails we carry on — the deploy below
+      # uses the file on disk, not the committed one.
+      - name: Commit if the list changed
+        run: |
+          if git diff --quiet -- posts.json; then
+            echo "No new posts — nothing to commit."
+            exit 0
+          fi
+          git config user.name  "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add posts.json
+          git commit -m "Refresh LinkedIn posts"
+          git push || echo "Push failed — continuing to deploy anyway."
+
+      - uses: actions/configure-pages@v5
+
+      - name: Package the site
+        run: |
+          mkdir -p _site
+          cp index.html posts.json _site/
+
+      - uses: actions/upload-pages-artifact@v3
+        with:
+          path: _site
+
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - id: deployment
+        uses: actions/deploy-pages@v4
