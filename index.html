@@ -13,21 +13,21 @@
    EDIT THIS BLOCK ONLY.
 
    postsPerScreen   how many posts are on screen at once (1-4).
-                    3 fills a portrait screen nicely.
 
-   cropHeight       how much of each post to show, in px, measured
-                    at LinkedIn's native 504px width. Every card is
-                    cut off at exactly this point, which is what
-                    makes them all the same height. Lower = tighter
-                    crop, more posts fit. 620 shows the author,
-                    a few lines of copy and the image.
+   layout           'columns' puts the posts side by side as tall
+                    cards — right for a landscape screen.
+                    'rows' stacks them — right for a portrait screen.
+                    'auto' picks based on the screen's shape.
+
+   Every card is the same size and each embed is sized to fill its
+   card exactly, so there is nothing to hand-tune here.
    ───────────────────────────────────────────────────────────── */
 const CONFIG = {
   feedApi: './posts.json',
   eyebrow: 'Ampcontrol',
   title: 'Latest from LinkedIn',
   postsPerScreen: 3,
-  cropHeight: 620,
+  layout: 'columns',
   secondsPerScreen: 20,
   refreshMinutes: 15,
   collapseLongText: true
@@ -60,8 +60,8 @@ const CONFIG = {
   .stage{
     position:fixed; inset:0;
     display:grid; grid-template-rows:auto 1fr auto;
-    padding:clamp(18px,2.8vmin,46px);
-    gap:clamp(12px,2vmin,30px);
+    padding:clamp(16px,2.1vmin,38px);
+    gap:clamp(10px,1.4vmin,22px);
   }
 
   .brandbar{ display:flex; align-items:flex-end; justify-content:space-between; gap:24px; }
@@ -71,7 +71,7 @@ const CONFIG = {
   }
   .title{
     font-weight:600; font-style:italic; text-transform:uppercase;
-    letter-spacing:.02em; line-height:.98; font-size:clamp(26px,4.2vmin,66px);
+    letter-spacing:.02em; line-height:.98; font-size:clamp(24px,3.4vmin,52px);
   }
   .clock{
     font-weight:300; font-size:clamp(13px,1.5vmin,22px); color:var(--ink);
@@ -97,9 +97,9 @@ const CONFIG = {
   }
   .card .scaler{
     position:absolute; top:0; left:0;
-    width:504px; transform-origin:top left;
+    transform-origin:top left;
   }
-  .card iframe{ display:block; width:504px; height:100%; border:0; }
+  .card iframe{ display:block; width:100%; height:100%; border:0; }
 
   /* fades the hard crop edge so it reads as designed, not broken */
   .card::after{
@@ -117,7 +117,7 @@ const CONFIG = {
   .notice span{ font-weight:300; color:#5b6b85; line-height:1.5; }
 
   .ticker{ display:flex; align-items:center; gap:clamp(12px,1.8vmin,28px); }
-  .wave{ flex:1; height:clamp(22px,3vmin,48px); overflow:visible; }
+  .wave{ flex:1; height:clamp(18px,2.4vmin,38px); overflow:visible; }
   .wave .track{ fill:none; stroke:rgba(255,255,255,.22); stroke-width:2.5; }
   .wave .fill{ fill:none; stroke:var(--orange); stroke-width:4.5; stroke-linecap:round; }
 
@@ -161,7 +161,8 @@ const CONFIG = {
 (function(){
   'use strict';
 
-  var EMBED_W = 504;
+  var EMBED_W   = 504;   // LinkedIn's native embed width
+  var EMBED_MAX = 700;   // beyond this the post looks stretched
   var panel   = document.getElementById('panel');
   var dotsEl  = document.getElementById('dots');
   var slides  = [];
@@ -169,6 +170,12 @@ const CONFIG = {
   var idx = -1, started = 0, paused = false, pausedAt = 0;
   var DUR = (CONFIG.secondsPerScreen || 20) * 1000;
   var PER = Math.max(1, Math.min(4, CONFIG.postsPerScreen || 3));
+
+  function mode(){
+    var m = CONFIG.layout || 'columns';
+    if (m === 'auto') return window.innerWidth >= window.innerHeight ? 'columns' : 'rows';
+    return m === 'rows' ? 'rows' : 'columns';
+  }
 
   document.getElementById('eyebrow').textContent = CONFIG.eyebrow;
   document.getElementById('title').textContent   = CONFIG.title;
@@ -226,7 +233,7 @@ const CONFIG = {
     pages.forEach(function(page){
       var slide = document.createElement('div');
       slide.className = 'slide';
-      slide.style.gridTemplateRows = 'repeat(' + PER + ', 1fr)';
+      applyGrid(slide);
 
       page.forEach(function(p, j){
         var card = document.createElement('div');
@@ -234,7 +241,6 @@ const CONFIG = {
 
         var scaler = document.createElement('div');
         scaler.className = 'scaler';
-        scaler.style.height = CONFIG.cropHeight + 'px';
 
         var f = document.createElement('iframe');
         f.src = 'https://www.linkedin.com/embed/feed/update/' + p.urn +
@@ -269,14 +275,47 @@ const CONFIG = {
     show(0);
   }
 
-  /* Scale each embed to the card's width and anchor it to the top, so the
-     card's own height does the cropping. Every card ends up identical. */
+  function applyGrid(slide){
+    if (mode() === 'columns'){
+      slide.style.gridTemplateColumns = 'repeat(' + PER + ', 1fr)';
+      slide.style.gridTemplateRows = '1fr';
+    } else {
+      slide.style.gridTemplateColumns = '1fr';
+      slide.style.gridTemplateRows = 'repeat(' + PER + ', 1fr)';
+    }
+  }
+
+  /* Every card is the same size, so every embed matches by construction.
+     Where the card is at least as wide as LinkedIn's native embed we render
+     at the card's own width — no magnification, so it stays sharp and more
+     of the post fits. Narrower than that, we render at 504 and scale down,
+     because LinkedIn's embed gets cramped below about 400px. */
   function layout(){
+    var i, slidesEls = panel.querySelectorAll('.slide');
+    for (i = 0; i < slidesEls.length; i++) applyGrid(slidesEls[i]);
+
     var cards = panel.querySelectorAll('.card');
-    for (var i = 0; i < cards.length; i++){
+    for (i = 0; i < cards.length; i++){
       var w = cards[i].clientWidth;
+      var h = cards[i].clientHeight;
       var s = cards[i].querySelector('.scaler');
-      if (s) s.style.transform = 'scale(' + (w / EMBED_W) + ')';
+      if (!s || !w || !h) continue;
+
+      var k, sw, sh;
+      if (w >= EMBED_W){
+        k  = 1;
+        sw = Math.min(w, EMBED_MAX);
+        sh = h;
+        if (sw < w){ k = w / sw; sh = h / k; }
+      } else {
+        k  = w / EMBED_W;
+        sw = EMBED_W;
+        sh = h / k;
+      }
+
+      s.style.width  = Math.round(sw) + 'px';
+      s.style.height = Math.round(sh) + 'px';
+      s.style.transform = 'scale(' + k + ')';
     }
   }
   window.addEventListener('resize', layout);
