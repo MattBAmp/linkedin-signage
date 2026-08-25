@@ -33,12 +33,37 @@ const CONFIG = {
   title: 'Latest from LinkedIn',
   postsPerScreen: 3,
   layout: 'columns',
-  secondsPerScreen: 15,
+  secondsPerScreen: 24,
   slideSeconds: 4,
   refreshMinutes: 15,
   playVideo: true,
   maxCopyLines: 4
 };
+
+/* Any setting above can also be passed in the URL, which is the easier way to
+   change things in Fusion Signage: its player caches the page, so editing this
+   file may not reach the screen, but a changed URL always does.
+
+     .../linkedin-signage/?secondsPerScreen=15&slideSeconds=3
+
+   The URL wins over the values above. */
+(function(){
+  try {
+    var q = new URLSearchParams(window.location.search);
+    q.forEach(function(value, key){
+      if (!Object.prototype.hasOwnProperty.call(CONFIG, key)) return;
+      var current = CONFIG[key];
+      if (typeof current === 'number'){
+        var n = Number(value);
+        if (!isNaN(n) && n > 0) CONFIG[key] = n;
+      } else if (typeof current === 'boolean'){
+        CONFIG[key] = (value === 'true' || value === '1' || value === 'yes');
+      } else if (value){
+        CONFIG[key] = value;
+      }
+    });
+  } catch (e){ /* older player, ignore and use the values above */ }
+})();
 </script>
 
 <style>
@@ -543,12 +568,12 @@ const CONFIG = {
   function build(posts){
     panel.innerHTML = ''; dotsEl.innerHTML = ''; slides = []; loadLog = [];
 
+    /* Split into screenfuls. An earlier version merged a short final screen
+       into the one before it and then trimmed to PER, which silently threw
+       posts away whenever the count wasn't an exact multiple. Every post now
+       gets shown; a short last screen is padded with blanks instead. */
     var pages = [];
     for (var i = 0; i < posts.length; i += PER) pages.push(posts.slice(i, i + PER));
-    if (pages.length > 1 && pages[pages.length - 1].length < PER){
-      var tail = pages.pop();
-      pages[pages.length - 1] = pages[pages.length - 1].concat(tail).slice(-PER);
-    }
 
     pages.forEach(function(page){
       var slide = document.createElement('div');
