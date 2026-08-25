@@ -103,10 +103,32 @@ const CONFIG = {
     background:var(--paper); color:var(--body);
     border-radius:clamp(8px,1.1vmin,18px);
     box-shadow:0 clamp(5px,.9vmin,16px) clamp(18px,3vmin,48px) rgba(2,20,52,.34);
-    display:grid; grid-template-rows:auto 1fr auto;
+    display:grid; grid-template-rows:auto auto 1fr auto;
     padding:clamp(14px,1.7vmin,26px);
-    gap:clamp(10px,1.2vmin,18px);
+    gap:clamp(9px,1.05vmin,16px);
   }
+
+  /* ── who posted it ── */
+  .who{ display:flex; align-items:center; gap:clamp(7px,.85vmin,13px); }
+  .who img{
+    width:clamp(30px,3.5vmin,52px); height:clamp(30px,3.5vmin,52px);
+    border-radius:99px; flex:none;
+    /* contain, not cover: the Ampcontrol mark is wide and a circular crop
+       would clip it. Letterboxed inside the circle instead. */
+    object-fit:contain; background:#fff; padding:1px;
+    border:1px solid #E4E9F1;
+  }
+  .who .id{ min-width:0; line-height:1.24; }
+  .who .name{
+    font-weight:600; font-size:clamp(12px,1.35vmin,20px);
+    color:var(--body); white-space:nowrap; overflow:hidden; text-overflow:ellipsis;
+  }
+  .who .sub{
+    font-weight:300; font-size:clamp(9px,1.02vmin,15px); color:var(--muted);
+    white-space:nowrap; overflow:hidden; text-overflow:ellipsis;
+  }
+  .who .sub b{ font-weight:300; }
+  .who .sub .dot{ opacity:.55; padding:0 .35em; }
 
   .copy{
     font-weight:400; line-height:1.36;
@@ -117,7 +139,7 @@ const CONFIG = {
   /* With the media hidden, the card has only two children left, so the
      three-row template would drop the footer into the middle row and leave
      dead space under it. Two rows, copy taking the slack. */
-  .card[data-media="none"]{ grid-template-rows:1fr auto; }
+  .card[data-media="none"]{ grid-template-rows:auto 1fr auto; }
 
   /* a post with no media gets the whole card for its words */
   .card[data-media="none"] .copy{
@@ -164,11 +186,24 @@ const CONFIG = {
   .foot{
     display:flex; align-items:center; justify-content:space-between;
     gap:12px; border-top:1px solid #E4E9F1; padding-top:clamp(7px,.85vmin,13px);
-    font-size:clamp(10px,1.1vmin,16px); font-weight:300; color:var(--muted);
+    font-size:clamp(10px,1.12vmin,16px); font-weight:300; color:var(--muted);
   }
-  .badge{
+  .reacts{ display:flex; align-items:center; gap:clamp(4px,.5vmin,7px); }
+  .reacts .icons{ display:flex; align-items:center; }
+  .reacts .icons svg{
+    width:clamp(14px,1.55vmin,22px); height:clamp(14px,1.55vmin,22px);
+    border-radius:99px; margin-left:-.28em; border:1.5px solid #fff;
+  }
+  .reacts .icons svg:first-child{ margin-left:0; }
+  .reacts .n{ font-weight:500; color:var(--body); font-variant-numeric:tabular-nums; }
+
+  /* the media-type chip sits on the media, the way LinkedIn labels a document */
+  .chip{
+    position:absolute; left:clamp(6px,.75vmin,11px); top:clamp(6px,.75vmin,11px);
+    background:rgba(9,26,54,.76); color:#fff;
     font-weight:600; font-style:italic; text-transform:uppercase;
-    letter-spacing:.09em; color:var(--orange); white-space:nowrap;
+    letter-spacing:.08em; font-size:clamp(8px,.92vmin,13px);
+    padding:.32em .7em; border-radius:99px; pointer-events:none;
   }
 
   .notice{
@@ -306,6 +341,30 @@ const CONFIG = {
     return t.toLocaleDateString('en-AU', { day:'numeric', month:'short' });
   }
 
+  /* LinkedIn's own reaction glyphs are served from their CDN and may not load
+     on every network, so these are drawn here in their palette. Simplified,
+     but at 16px the simplification is invisible. */
+  var REACT = {
+    LIKE:          { bg:'#378FE9', d:'M5.2 7.4h1.5v4.4H5.2zM7.6 7.4c.9-.6 1.6-1.5 1.8-2.6.1-.5.5-.8 1-.8.6 0 1.1.5 1.1 1.1 0 .5-.1 1-.3 1.4h1.9c.6 0 1.1.5 1.1 1.1 0 .2 0 .3-.1.5l-.9 2.8c-.2.6-.7 1-1.3 1H7.6z' },
+    PRAISE:        { bg:'#6DAE4F', d:'M6.3 11.6L4.9 8.1c-.2-.5 0-1 .5-1.2.4-.2.9 0 1.1.4l.6 1.2-1-3.3c-.2-.5.1-1 .6-1.2.5-.1 1 .2 1.1.7l.7 2.4-.3-2.6c-.1-.5.3-1 .8-1 .5-.1 1 .3 1 .8l.4 2.7.4-1.7c.1-.5.6-.8 1.1-.7.5.1.8.6.7 1.1l-.9 4.2c-.3 1.3-1.4 2.2-2.7 2.2-1.1 0-2.1-.6-2.7-1.5z' },
+    EMPATHY:       { bg:'#DF704D', d:'M10 13.4l-.8-.7C6.4 10.2 5 8.9 5 7.3c0-1.3 1-2.3 2.3-2.3.7 0 1.4.3 1.9.9l.8.9.8-.9c.5-.6 1.2-.9 1.9-.9 1.3 0 2.3 1 2.3 2.3 0 1.6-1.4 2.9-4.2 5.4z' },
+    APPRECIATION:  { bg:'#8B7FD4', d:'M7 12.8V7.9c0-.4.3-.8.8-.8s.8.3.8.8V5.2c0-.4.3-.8.8-.8s.8.3.8.8v1.9c0-.4.3-.8.8-.8s.8.3.8.8v1.1c0-.4.3-.8.8-.8s.8.3.8.8v2.6c0 1.4-1.1 2.5-2.5 2.5H8.9c-1 0-1.9-.8-1.9-1.5z' },
+    INTEREST:      { bg:'#E7A33E', d:'M8.4 12.6h3.2v.9c0 .3-.3.6-.6.6H9c-.3 0-.6-.3-.6-.6zM10 3.9c2 0 3.6 1.6 3.6 3.6 0 1.3-.7 2.3-1.5 3-.3.3-.5.6-.5 1v.3H8.4v-.3c0-.4-.2-.7-.5-1-.8-.7-1.5-1.7-1.5-3 0-2 1.6-3.6 3.6-3.6z' },
+    ENTERTAINMENT: { bg:'#44BFD6', d:'M10 3.9c3.4 0 6.1 2.7 6.1 6.1S13.4 16.1 10 16.1 3.9 13.4 3.9 10 6.6 3.9 10 3.9zm-2.6 4.5c-.5 0-.9.4-.9.9s.4.9.9.9.9-.4.9-.9-.4-.9-.9-.9zm5.2 0c-.5 0-.9.4-.9.9s.4.9.9.9.9-.4.9-.9-.4-.9-.9-.9zM6.8 11.6c.5 1.5 1.8 2.5 3.2 2.5s2.7-1 3.2-2.5z' }
+  };
+
+  function reactionIcon(type){
+    var r = REACT[type] || REACT.LIKE;
+    return '<svg viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">' +
+           '<circle cx="10" cy="10" r="10" fill="' + r.bg + '"/>' +
+           '<path d="' + r.d + '" fill="#fff"/></svg>';
+  }
+
+  function group(n){
+    if (n >= 1000) return (n / 1000).toFixed(n >= 10000 ? 0 : 1).replace(/\.0$/, '') + 'K';
+    return String(n);
+  }
+
   function badgeFor(p){
     if (p.mediaType === 'document') {
       return p.pageCount > 1 ? p.pageCount + ' slides' : 'Document';
@@ -324,6 +383,31 @@ const CONFIG = {
   function buildCard(p){
     var card = document.createElement('article');
     card.className = 'card';
+
+    /* who posted it */
+    var who = document.createElement('header');
+    who.className = 'who';
+    if (p.avatar){
+      var av = document.createElement('img');
+      av.src = p.avatar; av.alt = '';
+      av.addEventListener('error', function(){ av.style.visibility = 'hidden'; });
+      who.appendChild(av);
+    }
+    var id = document.createElement('div');
+    id.className = 'id';
+    var nm = document.createElement('div');
+    nm.className = 'name';
+    nm.textContent = p.author || CONFIG.eyebrow;
+    var sub = document.createElement('div');
+    sub.className = 'sub';
+    var bits = [];
+    if (p.followers) bits.push(p.followers + ' followers');
+    if (p.age) bits.push(p.age);
+    else if (p.date) bits.push(when(p.date));
+    sub.innerHTML = bits.join('<span class="dot">·</span>');
+    id.appendChild(nm); id.appendChild(sub);
+    who.appendChild(id);
+    card.appendChild(who);
 
     var copy = document.createElement('div');
     copy.className = 'copy';
@@ -401,13 +485,36 @@ const CONFIG = {
     card.setAttribute('data-media', hasMedia ? p.mediaType : 'none');
     if (!hasMedia) log(p.urn, p.mediaType || 'text', 'no media, copy only');
 
+    var label = badgeFor(p);
+    if (hasMedia && label){
+      var chip = document.createElement('span');
+      chip.className = 'chip';
+      chip.textContent = label;
+      media.appendChild(chip);
+    }
+
     var foot = document.createElement('div');
     foot.className = 'foot';
-    var left  = document.createElement('span');
-    left.textContent = when(p.date);
+
+    var left = document.createElement('span');
+    left.className = 'reacts';
+    if (p.reactions){
+      var icons = document.createElement('span');
+      icons.className = 'icons';
+      var types = (p.reactionTypes && p.reactionTypes.length) ? p.reactionTypes : ['LIKE'];
+      icons.innerHTML = types.map(reactionIcon).join('');
+      var n = document.createElement('span');
+      n.className = 'n';
+      n.textContent = group(p.reactions);
+      left.appendChild(icons); left.appendChild(n);
+    }
+
     var right = document.createElement('span');
-    right.className = 'badge';
-    right.textContent = badgeFor(p);
+    if (p.comments){
+      right.textContent = group(p.comments) +
+        (p.comments === 1 ? ' comment' : ' comments');
+    }
+
     foot.appendChild(left); foot.appendChild(right);
     card.appendChild(foot);
 

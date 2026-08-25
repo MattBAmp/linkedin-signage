@@ -87,14 +87,27 @@ export function extractMedia(html) {
     .filter(u => !/company-logo|videocover|document-cover|profile-displayphoto/i.test(u));
 
   if (imgCandidates.length) {
+    // A post can carry several images, and LinkedIn may offer the same image
+    // at several sizes. Group by asset so multi-image posts keep every photo,
+    // then within each asset take the largest variant on offer.
     const px = u => {
       const m = u.match(/_(\d+)(?:x(\d+))?/);
       return m ? Math.max(Number(m[1] || 0), Number(m[2] || 0)) : 0;
     };
-    imgCandidates.sort((a, b) => px(b) - px(a));
+    const byAsset = new Map();
+    for (const u of imgCandidates) {
+      const id = (u.match(/\/dms\/image\/v2\/([^/]+)\//) || [, u])[1];
+      const best = byAsset.get(id);
+      if (!best || px(u) > px(best)) byAsset.set(id, u);
+    }
+    const ordered = [...byAsset.values()];
+
     out.type = 'image';
-    out.image = imgCandidates[0];
-    out.imageWidth = px(imgCandidates[0]) || null;
+    out.image = ordered[0];
+    if (ordered.length > 1) {
+      out.pages = ordered;
+      out.pageCount = ordered.length;
+    }
     return out;
   }
 
@@ -154,6 +167,51 @@ export function extractMedia(html) {
   return out;
 }
 
+/* ── author header and social counts ──
+   All lifted from attributes LinkedIn puts on the embed, not from class
+   names, so this survives their styling churn better than it otherwise would.
+   Reaction icons appear once per reaction type actually present on the post. */
+
+export function extractMeta(html) {
+  const meta = {};
+
+  // "Ampcontrol", from the actor link
+  const name = html.match(/feed-actor-name[^>]*>\s*([^<]+?)\s*</i);
+  if (name) meta.author = decode(name[1]).trim();
+
+  // "22,508 followers"
+  const foll = html.match(/([\d,]+)\s+followers?/i);
+  if (foll) meta.followers = foll[1];
+
+  // the small circular company logo
+  const av = html.match(
+    /https:\/\/media\.licdn\.com\/dms\/image\/[^"'\\\s<>)]*company-logo[^"'\\\s<>)]+/i
+  );
+  if (av) meta.avatar = decode(av[0]);
+
+  // LinkedIn's own relative age: "58m", "3d", "2w"
+  const t = html.match(/<time[^>]*>\s*([^<\s]+)\s*/i);
+  if (t) meta.age = decode(t[1]).trim();
+
+  // counts
+  const nr = html.match(/data-num-reactions="(\d+)"/i);
+  if (nr) meta.reactions = Number(nr[1]);
+  const nc = html.match(/data-num-comments="(\d+)"/i);
+  if (nc) meta.comments = Number(nc[1]);
+
+  // which reaction types are on the post, in the order LinkedIn shows them
+  const types = [];
+  const re = /data-reaction-type="([A-Z_]+)"/gi;
+  let m;
+  while ((m = re.exec(html))) {
+    const t2 = m[1].toUpperCase();
+    if (!types.includes(t2)) types.push(t2);
+  }
+  if (types.length) meta.reactionTypes = types.slice(0, 3);
+
+  return meta;
+}
+
 /* ── enrich each post by fetching its embed page ── */
 
 async function enrich(post) {
@@ -163,7 +221,11 @@ async function enrich(post) {
       redirect: 'follow'
     });
     if (!res.ok) {
-      console.log('  ' + post.urn + ': embed returned ' + res.status);
+      // A 404 here means LinkedIn will not serve the post at all. Previously
+      // this returned the post alive, so it reached the screens as an empty
+      // copy-only card. Drop it.
+      console.log('  ' + post.urn + ': embed returned ' + res.status + ' — dropping');
+      post._dead = true;
       return post;
     }
     const html = await res.text();
@@ -189,6 +251,9 @@ async function enrich(post) {
     const pageTitle = ogMeta(html, 'og:title') || title;
     if (pageTitle) post.title = pageTitle.replace(/\s*\|\s*LinkedIn\s*$/i, '').trim();
 
+    // Author header and social counts
+    Object.assign(post, extractMeta(html));
+
     // Media
     const media = extractMedia(html);
     post.mediaType = media.type;
@@ -201,7 +266,9 @@ async function enrich(post) {
     console.log('  ' + post.urn + ': ' + media.type +
       (media.image ? ' img' : '') +
       (media.video ? ' vid×' + media.video.length : '') +
-      (media.pages ? ' pages×' + media.pages.length : ''));
+      (media.pages ? ' pages×' + media.pages.length : '') +
+      '  ' + (post.reactions != null ? post.reactions + ' reactions' : 'no reaction count') +
+      (post.comments ? ', ' + post.comments + ' comments' : ''));
 
   } catch (err) {
     console.log('  ' + post.urn + ': enrich failed — ' + err.message);

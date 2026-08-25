@@ -27,11 +27,17 @@ regardless of what's in them.
 
 ## What gets extracted per post type
 
+Each card carries the LinkedIn header (logo, name, follower count, post age)
+above the copy, and the reaction icons, reaction count and comment count below
+the media — the same information the native embed showed, redrawn in Ampcontrol's
+own layout. Counts are read at build time, so they lag by up to one refresh.
+
 | Post type | What the card shows |
 |---|---|
-| Image | The 1280px image, whole |
+| Image | The image whole, at the largest size LinkedIn offers. Posts with several images page through them. |
 | Video | Plays the video muted on a loop, highest quality the browser accepts (720p / 640p / 360p). Falls back to the poster frame if playback is refused. |
 | Document carousel | Every slide, cross-fading, with page dots. Not just the cover. |
+| Post LinkedIn won't serve | Dropped. A 404 from the embed means the post is gone; it is no longer published as an empty card. |
 | Text only | The copy at a larger size, filling the card |
 
 If a piece of media won't load, that card silently becomes a copy-only card
