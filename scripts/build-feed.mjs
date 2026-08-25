@@ -17,7 +17,7 @@
 import { writeFile, readFile } from 'node:fs/promises';
 
 const FEED_URL  = process.env.FEED_URL;
-const MAX_POSTS = 12;
+const MAX_POSTS = Number(process.env.MAX_POSTS || 15);
 const OUT       = 'posts.json';
 
 const TYPES = { activity: 'activity', share: 'share', ugcpost: 'ugcPost' };
