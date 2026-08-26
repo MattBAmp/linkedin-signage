@@ -17,7 +17,8 @@
 import { writeFile, readFile } from 'node:fs/promises';
 
 const FEED_URL  = process.env.FEED_URL;
-const MAX_POSTS = Number(process.env.MAX_POSTS || 15);
+const MAX_POSTS = Number(process.env.MAX_POSTS || 15);   // usable posts wanted
+const SCAN_EXTRA = 8;   // spare candidates, because 404s are dropped later
 const OUT       = 'posts.json';
 
 const TYPES = { activity: 'activity', share: 'share', ugcpost: 'ugcPost' };
@@ -331,22 +332,34 @@ export async function main() {
       mediaType: 'text'
     });
 
-    if (found.length >= MAX_POSTS) break;
+    if (found.length >= MAX_POSTS + SCAN_EXTRA) break;
   }
 
   console.log('Found ' + found.length + ' posts in the feed.');
 
-  // Enrich each post with media from the embed page
-  console.log('Enriching posts from embed pages...');
-  const enriched = [];
+  // Enrich until we have MAX_POSTS that actually work. Posts LinkedIn refuses
+  // are dropped, so asking for exactly MAX_POSTS candidates would leave us
+  // short by however many 404'd — which is how a 15-post wall became 13.
+  console.log('Enriching posts from embed pages (want ' + MAX_POSTS + ' usable)...');
+  const posts = [];
+  let attempted = 0, deadCount = 0;
+
   for (const post of found) {
-    enriched.push(await enrich(post));
+    if (posts.length >= MAX_POSTS) break;
+    attempted++;
+    const done = await enrich(post);
+    if (done._dead) { deadCount++; continue; }
+    delete done._dead;
+    posts.push(done);
   }
 
-  // Drop dead posts
-  const posts = enriched.filter(p => !p._dead);
-  const deadCount = enriched.length - posts.length;
-  if (deadCount) console.log('Dropped ' + deadCount + ' dead post(s).');
+  console.log('Checked ' + attempted + ' of ' + found.length + ' candidates, ' +
+              'dropped ' + deadCount + ', kept ' + posts.length + '.');
+  if (posts.length < MAX_POSTS) {
+    console.log('Only ' + posts.length + ' usable posts available — the feed ' +
+                'does not carry enough. Raise the item count in rss.app if you ' +
+                'want more.');
+  }
 
   if (!posts.length) {
     const old = await previous();
