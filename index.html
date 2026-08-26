@@ -24,6 +24,9 @@
    slideSeconds     how long each carousel slide holds.
    playVideo        false shows the poster frame instead of playing.
    maxCopyLines     lines of post copy above the media.
+   fillScreens      true drops the last post or two rather than leaving a
+                    screen with a single card stranded on it. Set false to
+                    show every post regardless of how it divides.
 
    Press D on a keyboard to see which media loaded and which failed.
    ───────────────────────────────────────────────────────────── */
@@ -37,7 +40,8 @@ const CONFIG = {
   slideSeconds: 4,
   refreshMinutes: 15,
   playVideo: true,
-  maxCopyLines: 4
+  maxCopyLines: 4,
+  fillScreens: true
 };
 
 /* Any setting above can also be passed in the URL, which is the easier way to
@@ -307,6 +311,7 @@ const CONFIG = {
   var SLIDE_MS = Math.max(1500, (CONFIG.slideSeconds || 4) * 1000);
   var PER = Math.max(1, Math.min(4, CONFIG.postsPerScreen || 3));
   var loadLog = [];
+  var dropped = 0;
 
   function mode(){
     var m = CONFIG.layout || 'columns';
@@ -574,12 +579,23 @@ const CONFIG = {
 
   /* ── build all screenfuls ── */
   function build(posts){
-    panel.innerHTML = ''; dotsEl.innerHTML = ''; slides = []; loadLog = [];
+    panel.innerHTML = ''; dotsEl.innerHTML = ''; slides = []; loadLog = []; dropped = 0;
 
-    /* Split into screenfuls. An earlier version merged a short final screen
-       into the one before it and then trimmed to PER, which silently threw
-       posts away whenever the count wasn't an exact multiple. Every post now
-       gets shown; a short last screen is padded with blanks instead. */
+    /* Split into screenfuls.
+
+       With fillScreens on, trim the oldest one or two posts so the count
+       divides evenly and no screen is left with a single stranded card.
+       Never trims below one full screen. With it off, every post is shown
+       and a short last screen is padded with blanks — but never merged and
+       silently truncated, which is what an earlier version did. */
+    if (CONFIG.fillScreens !== false && posts.length > PER){
+      var keep = posts.length - (posts.length % PER);
+      if (keep >= PER && keep < posts.length){
+        dropped = posts.length - keep;
+        posts = posts.slice(0, keep);
+      }
+    }
+
     var pages = [];
     for (var i = 0; i < posts.length; i += PER) pages.push(posts.slice(i, i + PER));
 
@@ -708,6 +724,9 @@ const CONFIG = {
     var counts = {};
     loadLog.forEach(function(l){ counts[l.status] = (counts[l.status] || 0) + 1; });
     var lines = ['<b>Media status</b>'];
+    lines.push(slides.length + ' screens \u00d7 ' + PER + ' posts');
+    if (dropped) lines.push(dropped + ' post(s) trimmed to keep screens full');
+    lines.push('');
     Object.keys(counts).forEach(function(k){ lines.push(counts[k] + ' × ' + k); });
     lines.push('');
     lines.push('<b>Per post</b>');
