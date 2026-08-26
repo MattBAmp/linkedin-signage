@@ -36,7 +36,7 @@ own layout. Counts are read at build time, so they lag by up to one refresh.
 |---|---|
 | Image | The image whole, at the largest size LinkedIn offers. Posts with several images page through them. |
 | Video | Plays the video muted on a loop, highest quality the browser accepts (720p / 640p / 360p). Falls back to the poster frame if playback is refused. |
-| Document carousel | Every slide, cross-fading, with page dots. Not just the cover. |
+| Document carousel | The slides LinkedIn releases, cross-fading, with page dots. |
 | Post LinkedIn won't serve | Dropped. A 404 from the embed means the post is gone; it is no longer published as an empty card. |
 | Text only | The copy at a larger size, filling the card |
 
@@ -56,6 +56,26 @@ rather than showing an empty grey box.
 
 The page lands at `https://<owner>.github.io/<repo>/`. Add that to Fusion
 Signage as a website media item.
+
+## A limit on carousels
+
+LinkedIn's embed hands over **only the first three slides** of a document, no
+matter how long it is, and each slide URL is individually signed — so slides
+four and beyond cannot be constructed or fetched. The config does carry the
+real length, so a six-page document is labelled `3 of 6 slides` rather than
+pretending three is the whole thing. The master manifest that would contain
+every page returns a Cloudflare error from LinkedIn's own servers.
+
+If showing complete carousels matters more than layout control, the fallback is
+to post them as multi-image posts rather than documents — every image comes
+through in that format.
+
+## How many posts
+
+`MAX_POSTS` in `scripts/build-feed.mjs` is 15. The feed can only give what
+rss.app publishes, so if the build log says `Found 12 posts in the feed` the
+limit is rss.app's item count, not this setting — raise it in your rss.app
+feed settings.
 
 ## Tuning
 

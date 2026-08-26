@@ -390,11 +390,19 @@ const CONFIG = {
     return String(n);
   }
 
+  /* LinkedIn only releases the first three slides of a document, but it does
+     tell us the real length. Say "3 of 6" rather than "3 slides" — three dots
+     under a "6 slides" label just reads as broken. */
   function badgeFor(p){
-    if (p.mediaType === 'document') {
-      return p.pageCount > 1 ? p.pageCount + ' slides' : 'Document';
+    if (p.mediaType === 'document'){
+      var have  = p.pageCount || 0;
+      var total = p.totalPages || have;
+      if (!have) return 'Document';
+      if (total > have) return have + ' of ' + total + ' slides';
+      return have > 1 ? have + ' slides' : 'Document';
     }
     if (p.mediaType === 'video') return 'Video';
+    if (p.mediaType === 'image' && p.pageCount > 1) return p.pageCount + ' photos';
     return '';
   }
 
