@@ -73,7 +73,8 @@ export function stripHtml(s) {
 }
 
 export function extractMedia(html) {
-  const out = { type: 'text', image: null, video: null, poster: null, pages: null, pageCount: 0 };
+  const out = { type: 'text', image: null, video: null, poster: null, pages: null,
+                pageCount: 0, totalPages: 0, docTitle: null };
 
   // Image posts. LinkedIn serves several size tokens depending on the source
   // file — image-shrink_1280, image-shrink_800, feedshare-shrink_2048 and so
@@ -144,13 +145,27 @@ export function extractMedia(html) {
     out.type = 'document';
     try {
       const config = JSON.parse(decode(docConfig[1]));
-      if (config.doc && config.doc.coverPages) {
-        out.pages = config.doc.coverPages
+      const doc = config.doc || {};
+
+      if (doc.coverPages) {
+        out.pages = doc.coverPages
           .filter(p => p.type === 'image' && p.config && p.config.src)
           .map(p => p.config.src);
         out.pageCount = out.pages.length;
         out.image = out.pages[0] || null;
       }
+
+      // LinkedIn caps coverPages at three no matter how long the document is,
+      // and each page URL is individually signed, so pages beyond the third
+      // cannot be constructed. It does tell us the real total, so the card can
+      // at least label itself honestly.
+      if (typeof doc.totalPageCount === 'number' && doc.totalPageCount > 0) {
+        out.totalPages = doc.totalPageCount;
+      } else {
+        const sub = String(doc.subtitle || '').match(/(\d+)\s*pages?/i);
+        if (sub) out.totalPages = Number(sub[1]);
+      }
+      if (doc.title) out.docTitle = String(doc.title).slice(0, 120);
     } catch (e) {
       console.log('  doc config parse failed: ' + e.message);
     }
@@ -260,13 +275,16 @@ async function enrich(post) {
     if (media.image)     post.image     = media.image;
     if (media.poster)    post.poster    = media.poster;
     if (media.video)     post.video     = media.video;
-    if (media.pages)     post.pages     = media.pages;
-    if (media.pageCount) post.pageCount = media.pageCount;
+    if (media.pages)      post.pages      = media.pages;
+    if (media.pageCount)  post.pageCount  = media.pageCount;
+    if (media.totalPages) post.totalPages = media.totalPages;
+    if (media.docTitle)   post.docTitle   = media.docTitle;
 
     console.log('  ' + post.urn + ': ' + media.type +
       (media.image ? ' img' : '') +
       (media.video ? ' vid×' + media.video.length : '') +
-      (media.pages ? ' pages×' + media.pages.length : '') +
+      (media.pages ? ' pages×' + media.pages.length +
+        (media.totalPages > media.pages.length ? ' of ' + media.totalPages : '') : '') +
       '  ' + (post.reactions != null ? post.reactions + ' reactions' : 'no reaction count') +
       (post.comments ? ', ' + post.comments + ' comments' : ''));
 
