@@ -1,6 +1,6 @@
 {
   "ok": true,
-  "updated": "2026-08-26T00:27:48.155Z",
+  "updated": "2026-08-26T00:57:43.715Z",
   "posts": [
     {
       "urn": "urn:li:activity:7498152427016278016",
@@ -12,7 +12,7 @@
       "followers": "22,518",
       "avatar": "https://media.licdn.com/dms/image/v2/C4D0BAQFnNjiNS_pEZw/company-logo_100_100/company-logo_100_100/0/1631337566305?e=2147483647&v=beta&t=k4Ne7StOvA1WbVXIMY9Lhk9lcOs8YxZAGtR_igBWwrg",
       "age": "1h",
-      "reactions": 4,
+      "reactions": 5,
       "reactionTypes": [
         "LIKE"
       ],
@@ -36,7 +36,7 @@
       "followers": "22,518",
       "avatar": "https://media.licdn.com/dms/image/v2/C4D0BAQFnNjiNS_pEZw/company-logo_100_100/company-logo_100_100/0/1631337566305?e=2147483647&v=beta&t=k4Ne7StOvA1WbVXIMY9Lhk9lcOs8YxZAGtR_igBWwrg",
       "age": "1d",
-      "reactions": 85,
+      "reactions": 86,
       "comments": 2,
       "reactionTypes": [
         "LIKE",
@@ -52,7 +52,7 @@
     },
     {
       "urn": "urn:li:activity:7496423441219219456",
-      "title": "#ampcontrol #peopleofampcontrol #leadership #westernaustralia | Ampcontrol | 82 comments",
+      "title": "#ampcontrol #peopleofampcontrol #leadership #westernaustralia | Ampcontrol | 83 comments",
       "date": "Fri, 21 Aug 2026 04:30:25 GMT",
       "copy": "We're pleased to welcome Steve Reinholdtsen to Ampcontrol. With more than 40 years of experience across the electrical, manufacturing and industrial sectors, Steve brings a wealth of industry knowledge, strong commercial expertise and a passion for building high-performing teams. We look forward to the experience, leadership and perspective Steve will bring to our customers, employees and business. Welcome to the team, Steve. #Ampcontrol #PeopleofAmpcontrol #Leadership #WesternAustralia",
       "mediaType": "image",
@@ -60,8 +60,8 @@
       "followers": "22,518",
       "avatar": "https://media.licdn.com/dms/image/v2/C4D0BAQFnNjiNS_pEZw/company-logo_100_100/company-logo_100_100/0/1631337566305?e=2147483647&v=beta&t=k4Ne7StOvA1WbVXIMY9Lhk9lcOs8YxZAGtR_igBWwrg",
       "age": "4d",
-      "reactions": 261,
-      "comments": 82,
+      "reactions": 262,
+      "comments": 83,
       "reactionTypes": [
         "LIKE",
         "PRAISE",
@@ -234,7 +234,7 @@
       "followers": "22,518",
       "avatar": "https://media.licdn.com/dms/image/v2/C4D0BAQFnNjiNS_pEZw/company-logo_100_100/company-logo_100_100/0/1631337566305?e=2147483647&v=beta&t=k4Ne7StOvA1WbVXIMY9Lhk9lcOs8YxZAGtR_igBWwrg",
       "age": "2w",
-      "reactions": 30,
+      "reactions": 31,
       "comments": 1,
       "reactionTypes": [
         "LIKE"
@@ -259,7 +259,7 @@
       "followers": "22,518",
       "avatar": "https://media.licdn.com/dms/image/v2/C4D0BAQFnNjiNS_pEZw/company-logo_100_100/company-logo_100_100/0/1631337566305?e=2147483647&v=beta&t=k4Ne7StOvA1WbVXIMY9Lhk9lcOs8YxZAGtR_igBWwrg",
       "age": "3w",
-      "reactions": 109,
+      "reactions": 110,
       "comments": 1,
       "reactionTypes": [
         "LIKE",
