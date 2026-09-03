@@ -1,7 +1,39 @@
 {
   "ok": true,
-  "updated": "2026-09-03T00:59:28.593Z",
+  "updated": "2026-09-03T01:24:33.914Z",
   "posts": [
+    {
+      "urn": "urn:li:activity:7501075318577999873",
+      "title": "#datacentre #engineering #infrastructure | Ampcontrol",
+      "date": "Thu, 03 Sep 2026 00:35:19 GMT",
+      "copy": "Follow the journey of a 24/30MVA power transformer from our manufacturing facility in Tomago to it's final destination at Macquarie Data Centres IC3 Superwest Sydney campus. Supporting the first cloud and AI-Ready data centre in Sydney’s north zone the 40 ton transformer needed careful planning, specialised transport logistics, and an expert installation process to safely deliver and commission one of the most important pieces of electrical infrastructure in a modern data centre. Congratulations to the multiple different teams at both Ampcontrol and Macquarie Data Centres across engineering, m",
+      "mediaType": "video",
+      "author": "Ampcontrol",
+      "followers": "22,557",
+      "avatar": "https://media.licdn.com/dms/image/v2/C4D0BAQFnNjiNS_pEZw/company-logo_100_100/company-logo_100_100/0/1631337566305?e=2147483647&v=beta&t=k4Ne7StOvA1WbVXIMY9Lhk9lcOs8YxZAGtR_igBWwrg",
+      "age": "49m",
+      "reactions": 9,
+      "reactionTypes": [
+        "LIKE",
+        "PRAISE",
+        "EMPATHY"
+      ],
+      "poster": "https://media.licdn.com/dms/image/v2/D5610AQG9jRGTZhO8Nw/videocover-high/B56aBksMyrGQAo-/0/1788395707024?e=2147483647&v=beta&t=wnk_4MlC2kkQuU2muB2b_sgRgKKMP88zAI0DlKiA-MI",
+      "video": [
+        {
+          "src": "https://dms.licdn.com/playlist/vid/v2/D5610AQG9jRGTZhO8Nw/mp4-720p-30fp-crf28/B56aBksMyrGQBk-/0/1788395713778?e=2147483647&v=beta&t=4c3Kgn528NrGMo7AXeTp_Ou71TlVvZXvZc_K5hmNNH4",
+          "type": "video/mp4"
+        },
+        {
+          "src": "https://dms.licdn.com/playlist/vid/v2/D5610AQG9jRGTZhO8Nw/mp4-640p-30fp-crf28/B56aBksMyrGQBI-/0/1788395713779?e=2147483647&v=beta&t=GpRBymTESCZFkmiRPe2ImglJy1UMQYzXxXw97C-TimM",
+          "type": "video/mp4"
+        },
+        {
+          "src": "https://dms.licdn.com/playlist/vid/v2/D5610AQG9jRGTZhO8Nw/mp4-360p-30fp-crf28/B56aBksMyrGQBg-/0/1788395713779?e=2147483647&v=beta&t=9f7czz1GwvsTb3brd6ps_9O-bAuo5nxolOaEQNB4xhY",
+          "type": "video/mp4"
+        }
+      ]
+    },
     {
       "urn": "urn:li:activity:7500689036332724225",
       "title": "#mining #reliability #maintenance #miningservices #assetmanagement… | Ampcontrol",
@@ -12,7 +44,7 @@
       "followers": "22,557",
       "avatar": "https://media.licdn.com/dms/image/v2/C4D0BAQFnNjiNS_pEZw/company-logo_100_100/company-logo_100_100/0/1631337566305?e=2147483647&v=beta&t=k4Ne7StOvA1WbVXIMY9Lhk9lcOs8YxZAGtR_igBWwrg",
       "age": "1d",
-      "reactions": 11,
+      "reactions": 13,
       "reactionTypes": [
         "LIKE"
       ],
@@ -28,7 +60,7 @@
       "followers": "22,557",
       "avatar": "https://media.licdn.com/dms/image/v2/C4D0BAQFnNjiNS_pEZw/company-logo_100_100/company-logo_100_100/0/1631337566305?e=2147483647&v=beta&t=k4Ne7StOvA1WbVXIMY9Lhk9lcOs8YxZAGtR_igBWwrg",
       "age": "3d",
-      "reactions": 29,
+      "reactions": 31,
       "comments": 1,
       "reactionTypes": [
         "LIKE"
@@ -53,7 +85,7 @@
       "followers": "22,557",
       "avatar": "https://media.licdn.com/dms/image/v2/C4D0BAQFnNjiNS_pEZw/company-logo_100_100/company-logo_100_100/0/1631337566305?e=2147483647&v=beta&t=k4Ne7StOvA1WbVXIMY9Lhk9lcOs8YxZAGtR_igBWwrg",
       "age": "1w",
-      "reactions": 14,
+      "reactions": 16,
       "reactionTypes": [
         "LIKE"
       ],
@@ -69,7 +101,7 @@
       "followers": "22,557",
       "avatar": "https://media.licdn.com/dms/image/v2/C4D0BAQFnNjiNS_pEZw/company-logo_100_100/company-logo_100_100/0/1631337566305?e=2147483647&v=beta&t=k4Ne7StOvA1WbVXIMY9Lhk9lcOs8YxZAGtR_igBWwrg",
       "age": "1w",
-      "reactions": 21,
+      "reactions": 22,
       "comments": 1,
       "reactionTypes": [
         "LIKE"
@@ -94,7 +126,7 @@
       "followers": "22,557",
       "avatar": "https://media.licdn.com/dms/image/v2/C4D0BAQFnNjiNS_pEZw/company-logo_100_100/company-logo_100_100/0/1631337566305?e=2147483647&v=beta&t=k4Ne7StOvA1WbVXIMY9Lhk9lcOs8YxZAGtR_igBWwrg",
       "age": "1w",
-      "reactions": 123,
+      "reactions": 124,
       "comments": 3,
       "reactionTypes": [
         "LIKE",
@@ -118,7 +150,7 @@
       "followers": "22,557",
       "avatar": "https://media.licdn.com/dms/image/v2/C4D0BAQFnNjiNS_pEZw/company-logo_100_100/company-logo_100_100/0/1631337566305?e=2147483647&v=beta&t=k4Ne7StOvA1WbVXIMY9Lhk9lcOs8YxZAGtR_igBWwrg",
       "age": "1w",
-      "reactions": 312,
+      "reactions": 313,
       "comments": 100,
       "reactionTypes": [
         "LIKE",
@@ -137,7 +169,7 @@
       "followers": "22,557",
       "avatar": "https://media.licdn.com/dms/image/v2/C4D0BAQFnNjiNS_pEZw/company-logo_100_100/company-logo_100_100/0/1631337566305?e=2147483647&v=beta&t=k4Ne7StOvA1WbVXIMY9Lhk9lcOs8YxZAGtR_igBWwrg",
       "age": "1w",
-      "reactions": 30,
+      "reactions": 31,
       "reactionTypes": [
         "LIKE",
         "PRAISE"
@@ -154,7 +186,7 @@
       "followers": "22,557",
       "avatar": "https://media.licdn.com/dms/image/v2/C4D0BAQFnNjiNS_pEZw/company-logo_100_100/company-logo_100_100/0/1631337566305?e=2147483647&v=beta&t=k4Ne7StOvA1WbVXIMY9Lhk9lcOs8YxZAGtR_igBWwrg",
       "age": "1w",
-      "reactions": 26,
+      "reactions": 27,
       "reactionTypes": [
         "LIKE",
         "EMPATHY",
@@ -180,7 +212,7 @@
       "followers": "22,557",
       "avatar": "https://media.licdn.com/dms/image/v2/C4D0BAQFnNjiNS_pEZw/company-logo_100_100/company-logo_100_100/0/1631337566305?e=2147483647&v=beta&t=k4Ne7StOvA1WbVXIMY9Lhk9lcOs8YxZAGtR_igBWwrg",
       "age": "3w",
-      "reactions": 95,
+      "reactions": 96,
       "comments": 2,
       "reactionTypes": [
         "LIKE",
@@ -316,7 +348,7 @@
       "author": "Ampcontrol",
       "followers": "22,557",
       "avatar": "https://media.licdn.com/dms/image/v2/C4D0BAQFnNjiNS_pEZw/company-logo_100_100/company-logo_100_100/0/1631337566305?e=2147483647&v=beta&t=k4Ne7StOvA1WbVXIMY9Lhk9lcOs8YxZAGtR_igBWwrg",
-      "age": "4w",
+      "age": "1mo",
       "reactions": 111,
       "comments": 1,
       "reactionTypes": [
@@ -325,23 +357,6 @@
         "INTEREST"
       ],
       "image": "https://media.licdn.com/dms/image/v2/D4D10AQGevEXRz_7r5g/image-shrink_800/B4DZ_KS.J1IIAk-/0/1785805400098?e=2147483647&v=beta&t=hbKW-m-UayEA6XPeYR3MBccttDJ6mk6nZaJITzfdc3E"
-    },
-    {
-      "urn": "urn:li:activity:7489817396128563200",
-      "title": "#ampcontrol #diggersanddealers #mining #electrifyingmining… | Ampcontrol",
-      "date": "Sun, 02 Aug 2026 23:00:21 GMT",
-      "copy": "⚡ Kalgoorlie, we're coming back. The Ampcontrol team is heading to the Diggers & Dealers Mining Forum ready to connect with industry leaders and discuss the future of mining. From mine electrification and energy solutions to decarbonisation technologies, we're helping customers overcome today's challenges while preparing for tomorrow's opportunities. Catch up with Jeff Jasson to talk about what's next for your operation. 👉 https://lnkd.in/gw9zWvQe #Ampcontrol #DiggersAndDealers #Mining #ElectrifyingMining #EnergyTransition #Decarbonisation",
-      "mediaType": "image",
-      "author": "Ampcontrol",
-      "followers": "22,557",
-      "avatar": "https://media.licdn.com/dms/image/v2/C4D0BAQFnNjiNS_pEZw/company-logo_100_100/company-logo_100_100/0/1631337566305?e=2147483647&v=beta&t=k4Ne7StOvA1WbVXIMY9Lhk9lcOs8YxZAGtR_igBWwrg",
-      "age": "1mo",
-      "reactions": 41,
-      "reactionTypes": [
-        "LIKE",
-        "PRAISE"
-      ],
-      "image": "https://media.licdn.com/dms/image/v2/D4D10AQHBOV4H4FaTfw/image-shrink_800/B4DZ_EtN5EI4Ag-/0/1785711616091?e=2147483647&v=beta&t=Jmv-HtgC7GRBufvZ2JivMt0KG_6y1v2NwYOuadoAwDM"
     }
   ]
 }
