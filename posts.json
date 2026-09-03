@@ -1,6 +1,6 @@
 {
   "ok": true,
-  "updated": "2026-09-02T23:44:00.412Z",
+  "updated": "2026-09-03T00:31:41.765Z",
   "posts": [
     {
       "urn": "urn:li:activity:7500689036332724225",
@@ -208,29 +208,13 @@
       "title": "Reducing Emissions in Manufacturing | Ampcontrol posted on the topic",
       "date": "Wed, 12 Aug 2026 00:02:07 GMT",
       "copy": "What does reducing operational emissions look like in manufacturing? 👀 From electric cars to solar panels, we are taking practical steps towards achieving our target of net zero emissions by 2040. Read our full 2026 Sustainability Statement 👉 https://lnkd.in/gjDARuP2 #sustainability #decarbonisation",
-      "mediaType": "video",
+      "mediaType": "text",
       "author": "Ampcontrol",
       "followers": "22,558",
-      "avatar": "https://media.licdn.com/dms/image/v2/C4D0BAQFnNjiNS_pEZw/company-logo_100_100/company-logo_100_100/0/1631337566305?e=2147483647&v=beta&t=k4Ne7StOvA1WbVXIMY9Lhk9lcOs8YxZAGtR_igBWwrg",
       "age": "3w",
       "reactions": 23,
       "reactionTypes": [
         "LIKE"
-      ],
-      "poster": "https://media.licdn.com/dms/image/v2/D5610AQGUv03sSAAiAA/videocover-high/B56Z_zRcx_HAAo-/0/1786492873528?e=2147483647&v=beta&t=doCplESlv-P92uo3fPbcSRP-XZS9qcNWX4kh-H6fLfk",
-      "video": [
-        {
-          "src": "https://dms.licdn.com/playlist/vid/v2/D5610AQGUv03sSAAiAA/mp4-720p-30fp-crf28/B56Z_zRcx_HABk-/0/1786492878041?e=2147483647&v=beta&t=37FcufDqc7l55fEtKLqoEv5PJ1JaYo_fYdkto-wgMWM",
-          "type": "video/mp4"
-        },
-        {
-          "src": "https://dms.licdn.com/playlist/vid/v2/D5610AQGUv03sSAAiAA/mp4-640p-30fp-crf28/B56Z_zRcx_HABI-/0/1786492878041?e=2147483647&v=beta&t=PZRY7NODBgcyAlDZwdqgZZsuRLe5mOhsKMwHG9G_frg",
-          "type": "video/mp4"
-        },
-        {
-          "src": "https://dms.licdn.com/playlist/vid/v2/D5610AQGUv03sSAAiAA/mp4-360p-30fp-crf28/B56Z_zRcx_HABg-/0/1786492878041?e=2147483647&v=beta&t=s-Z4imLnBIiKeUCklLryoSHZ3NON6pdvCQvi_1VrggA",
-          "type": "video/mp4"
-        }
       ]
     },
     {
