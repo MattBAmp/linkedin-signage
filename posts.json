@@ -1,6 +1,6 @@
 {
   "ok": true,
-  "updated": "2026-09-04T05:45:50.366Z",
+  "updated": "2026-09-04T06:25:52.092Z",
   "posts": [
     {
       "urn": "urn:li:activity:7501412271252844544",
@@ -11,10 +11,11 @@
       "author": "Ampcontrol",
       "followers": "22,569",
       "avatar": "https://media.licdn.com/dms/image/v2/C4D0BAQFnNjiNS_pEZw/company-logo_100_100/company-logo_100_100/0/1631337566305?e=2147483647&v=beta&t=k4Ne7StOvA1WbVXIMY9Lhk9lcOs8YxZAGtR_igBWwrg",
-      "age": "6h",
-      "reactions": 11,
+      "age": "7h",
+      "reactions": 14,
       "reactionTypes": [
-        "LIKE"
+        "LIKE",
+        "PRAISE"
       ],
       "image": "https://media.licdn.com/dms/image/v2/D5610AQFw41ngIh1A3w/ads-document-cover-images_480/B56aBpeqs1JUAw-/0/1788476048693?e=2147483647&v=beta&t=k3J6FlBoL1fFI8OwHxOwacHtf2OqScIEhJ0XyGi7sI4",
       "pages": [
@@ -175,7 +176,7 @@
       "followers": "22,569",
       "avatar": "https://media.licdn.com/dms/image/v2/C4D0BAQFnNjiNS_pEZw/company-logo_100_100/company-logo_100_100/0/1631337566305?e=2147483647&v=beta&t=k4Ne7StOvA1WbVXIMY9Lhk9lcOs8YxZAGtR_igBWwrg",
       "age": "2w",
-      "reactions": 316,
+      "reactions": 317,
       "comments": 100,
       "reactionTypes": [
         "LIKE",
