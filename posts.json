@@ -1,6 +1,6 @@
 {
   "ok": true,
-  "updated": "2026-09-08T02:21:53.926Z",
+  "updated": "2026-09-08T02:47:49.864Z",
   "posts": [
     {
       "urn": "urn:li:activity:7501412271252844544",
@@ -12,10 +12,11 @@
       "followers": "22,575",
       "avatar": "https://media.licdn.com/dms/image/v2/C4D0BAQFnNjiNS_pEZw/company-logo_100_100/company-logo_100_100/0/1631337566305?e=2147483647&v=beta&t=k4Ne7StOvA1WbVXIMY9Lhk9lcOs8YxZAGtR_igBWwrg",
       "age": "4d",
-      "reactions": 25,
+      "reactions": 26,
       "reactionTypes": [
         "LIKE",
-        "PRAISE"
+        "PRAISE",
+        "EMPATHY"
       ],
       "image": "https://media.licdn.com/dms/image/v2/D5610AQFw41ngIh1A3w/ads-document-cover-images_480/B56aBpeqs1JUAw-/0/1788476048693?e=2147483647&v=beta&t=k3J6FlBoL1fFI8OwHxOwacHtf2OqScIEhJ0XyGi7sI4",
       "pages": [
