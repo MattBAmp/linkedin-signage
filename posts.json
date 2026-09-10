@@ -1,6 +1,6 @@
 {
   "ok": true,
-  "updated": "2026-09-10T07:48:33.612Z",
+  "updated": "2026-09-10T08:24:02.683Z",
   "posts": [
     {
       "urn": "urn:li:activity:7503701381178871808",
@@ -12,7 +12,7 @@
       "followers": "22,589",
       "avatar": "https://media.licdn.com/dms/image/v2/C4D0BAQFnNjiNS_pEZw/company-logo_100_100/company-logo_100_100/0/1631337566305?e=2147483647&v=beta&t=k4Ne7StOvA1WbVXIMY9Lhk9lcOs8YxZAGtR_igBWwrg",
       "age": "1h",
-      "reactions": 7,
+      "reactions": 10,
       "reactionTypes": [
         "LIKE",
         "EMPATHY"
