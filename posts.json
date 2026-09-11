@@ -1,6 +1,6 @@
 {
   "ok": true,
-  "updated": "2026-09-11T01:47:21.458Z",
+  "updated": "2026-09-11T02:21:46.075Z",
   "posts": [
     {
       "urn": "urn:li:activity:7503701381178871808",
@@ -37,7 +37,7 @@
       "author": "Ampcontrol",
       "followers": "22,601",
       "avatar": "https://media.licdn.com/dms/image/v2/C4D0BAQFnNjiNS_pEZw/company-logo_100_100/company-logo_100_100/0/1631337566305?e=2147483647&v=beta&t=k4Ne7StOvA1WbVXIMY9Lhk9lcOs8YxZAGtR_igBWwrg",
-      "age": "1d",
+      "age": "2d",
       "reactions": 89,
       "comments": 4,
       "reactionTypes": [
@@ -146,7 +146,7 @@
     },
     {
       "urn": "urn:li:activity:7499964310564257792",
-      "title": "Battery Energy Storage Systems | Ampcontrol",
+      "title": "BESS Applications: Energy Storage for Grid Stability and Renewable Integration | Ampcontrol posted on the topic",
       "date": "Sun, 30 Aug 2026 23:00:34 GMT",
       "copy": "Reliance on renewable energy generation is growing, and so is the role of battery energy storage systems (BESS). So, where are BESS used? BESS store energy for use when it is needed, helping balance differences between when energy is generated and when it is consumed. Unlike standard UPS systems that provide short-duration backup power, BESS can deliver sustained energy output over several hours, making them suitable for off-grid power supply, peak shaving, renewable energy integration and grid stability services. Swipe through to explore the range of applications our battery energy storage sy",
       "mediaType": "document",
