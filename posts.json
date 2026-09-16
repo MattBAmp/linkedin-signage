@@ -1,7 +1,34 @@
 {
   "ok": true,
-  "updated": "2026-09-16T05:47:22.108Z",
+  "updated": "2026-09-16T06:27:12.241Z",
   "posts": [
+    {
+      "urn": "urn:li:activity:7505856803939885073",
+      "title": "RAP Innovate Launch | Ampcontrol",
+      "date": "Wed, 16 Sep 2026 05:15:14 GMT",
+      "copy": "Reconciliation is not achieved alone. Progress starts with people, grows through relationships, and is strengthened by action. Yesterday, on Worimi Country, we launched Ampcontrol’s Innovate Reconciliation Action Plan (RAP) 2026-28. Building on the foundations of our Reflect RAP, this next stage is where we move from commitment to action. This is where we collaborate to create pathways into our business, support the growth and leadership of First Nations employees, and expand opportunities for First Nations businesses and suppliers. A huge thank you to Aunty Karen Moran , Career Links Yakka, R",
+      "mediaType": "document",
+      "author": "Ampcontrol",
+      "followers": "22,630",
+      "avatar": "https://media.licdn.com/dms/image/v2/C4D0BAQFnNjiNS_pEZw/company-logo_100_100/company-logo_100_100/0/1631337566305?e=2147483647&v=beta&t=k4Ne7StOvA1WbVXIMY9Lhk9lcOs8YxZAGtR_igBWwrg",
+      "age": "1h",
+      "reactions": 10,
+      "comments": 1,
+      "reactionTypes": [
+        "LIKE",
+        "EMPATHY",
+        "PRAISE"
+      ],
+      "image": "https://media.licdn.com/dms/image/v2/D5610AQHeaNB8t2lY4A/ads-document-cover-images_480/B56aCoo82qJAAw-/0/1789535705140?e=2147483647&v=beta&t=U5mEcrbwILQcAtg-uL-HldQaf9eddKRLVl9Pf_vbJrQ",
+      "pages": [
+        "https://media.licdn.com/dms/image/v2/D5610AQHeaNB8t2lY4A/ads-document-cover-images_480/B56aCoo82qJAAw-/0/1789535705140?e=2147483647&v=beta&t=U5mEcrbwILQcAtg-uL-HldQaf9eddKRLVl9Pf_vbJrQ",
+        "https://media.licdn.com/dms/image/v2/D5610AQHeaNB8t2lY4A/ads-document-cover-images_480/B56aCoo82qJAAw-/1/1789535705140?e=2147483647&v=beta&t=GoOC1Lb3w_8D_eVC7HVBLVGjzGCxlkTbdgSIplNHIpI",
+        "https://media.licdn.com/dms/image/v2/D5610AQHeaNB8t2lY4A/ads-document-cover-images_480/B56aCoo82qJAAw-/2/1789535705140?e=2147483647&v=beta&t=86rea9OyHUqh1laiJt17QYuZeLLpyetfZAH4eD2DqMw"
+      ],
+      "pageCount": 3,
+      "totalPages": 6,
+      "docTitle": "RAP Innovate Launch"
+    },
     {
       "urn": "urn:li:activity:7505489103354920960",
       "title": "#peopleofampcontrol | Ampcontrol",
@@ -325,23 +352,6 @@
         "EMPATHY"
       ],
       "image": "https://media.licdn.com/dms/image/v2/D5610AQEB7XlygwrV1A/image-shrink_1280/B56aAilUrAIwAc-/0/1787286604976?e=2147483647&v=beta&t=JV2Uj_3sppBZBlK5jQYqHuluXDJ7YSg_iZudsiqmwhk"
-    },
-    {
-      "urn": "urn:li:activity:7496340354628259840",
-      "title": "#mining #miningsolutions #australianmanufacturing #energytransition… | Ampcontrol",
-      "date": "Thu, 20 Aug 2026 23:00:16 GMT",
-      "copy": "Built Around Your Underground Mine ⚒️ No two mining operations are the same, so why settle for a standard solution? We design and manufacture customised electrical and energy solutions tailored to your site, equipment and goals. Whether you're improving reliability, enhancing safety, increasing productivity or advancing your energy transition, our Australian-based teams deliver solutions built around your operation. Because your operation isn't off-the-shelf, your solution shouldn't be either.👉 https://lnkd.in/gxwM_PnD #Mining #MiningSolutions #AustralianManufacturing #EnergyTransition #Ampco",
-      "mediaType": "image",
-      "author": "Ampcontrol",
-      "followers": "22,630",
-      "avatar": "https://media.licdn.com/dms/image/v2/C4D0BAQFnNjiNS_pEZw/company-logo_100_100/company-logo_100_100/0/1631337566305?e=2147483647&v=beta&t=k4Ne7StOvA1WbVXIMY9Lhk9lcOs8YxZAGtR_igBWwrg",
-      "age": "3w",
-      "reactions": 32,
-      "reactionTypes": [
-        "LIKE",
-        "PRAISE"
-      ],
-      "image": "https://media.licdn.com/dms/image/v2/D4D10AQFxM-t97nS-zw/image-shrink_1280/B4DaAhZ1R6KAAc-/0/1787266815571?e=2147483647&v=beta&t=ktXA3PR-dVXYtzJfRIpAuc5CaD8DV3hSLtD2sW2RVnQ"
     }
   ]
 }
