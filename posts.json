@@ -1,6 +1,6 @@
 {
   "ok": true,
-  "updated": "2026-10-11T22:25:23.199Z",
+  "updated": "2026-10-12T01:43:35.463Z",
   "posts": [
     {
       "urn": "urn:li:activity:7513811073876099072",
@@ -41,7 +41,7 @@
       "author": "Ampcontrol",
       "followers": "22,829",
       "avatar": "https://media.licdn.com/dms/image/v2/C4D0BAQFnNjiNS_pEZw/company-logo_100_100/company-logo_100_100/0/1631337566305?e=2147483647&v=beta&t=k4Ne7StOvA1WbVXIMY9Lhk9lcOs8YxZAGtR_igBWwrg",
-      "age": "4d",
+      "age": "5d",
       "reactions": 13,
       "reactionTypes": [
         "LIKE"
@@ -298,7 +298,7 @@
       "author": "Ampcontrol",
       "followers": "22,829",
       "avatar": "https://media.licdn.com/dms/image/v2/C4D0BAQFnNjiNS_pEZw/company-logo_100_100/company-logo_100_100/0/1631337566305?e=2147483647&v=beta&t=k4Ne7StOvA1WbVXIMY9Lhk9lcOs8YxZAGtR_igBWwrg",
-      "age": "3w",
+      "age": "4w",
       "reactions": 17,
       "comments": 1,
       "reactionTypes": [
