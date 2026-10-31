@@ -1,6 +1,6 @@
 {
   "ok": true,
-  "updated": "2026-10-31T16:17:22.878Z",
+  "updated": "2026-10-31T20:16:09.360Z",
   "posts": [
     {
       "urn": "urn:li:activity:7521050539606974464",
@@ -49,9 +49,10 @@
       "followers": "22,927",
       "avatar": "https://media.licdn.com/dms/image/v2/C4D0BAQFnNjiNS_pEZw/company-logo_100_100/company-logo_100_100/0/1631337566305?e=2147483647&v=beta&t=k4Ne7StOvA1WbVXIMY9Lhk9lcOs8YxZAGtR_igBWwrg",
       "age": "5d",
-      "reactions": 10,
+      "reactions": 11,
       "reactionTypes": [
-        "LIKE"
+        "LIKE",
+        "INTEREST"
       ],
       "image": "https://media.licdn.com/dms/image/v2/D4E10AQHRIrfdyQ25WQ/image-shrink_800/B4EaF05iNxG8Ag-/0/1792962602282?e=2147483647&v=beta&t=P1RSkZXuH5G0zhfztzAPABpUq4V_pPlyzKchJqG66d4"
     },
@@ -106,9 +107,10 @@
       "followers": "22,927",
       "avatar": "https://media.licdn.com/dms/image/v2/C4D0BAQFnNjiNS_pEZw/company-logo_100_100/company-logo_100_100/0/1631337566305?e=2147483647&v=beta&t=k4Ne7StOvA1WbVXIMY9Lhk9lcOs8YxZAGtR_igBWwrg",
       "age": "2w",
-      "reactions": 13,
+      "reactions": 14,
       "reactionTypes": [
         "LIKE",
+        "PRAISE",
         "EMPATHY"
       ],
       "image": "https://media.licdn.com/dms/image/v2/D4D10AQEOprtMDg3wQQ/image-shrink_1280/B4DaE.DAF4IgAc-/0/1792042337099?e=2147483647&v=beta&t=J6wRQsohqnG7mAhS19rLDIXL2hUibZ7JyRqAhlvUxZY"
