@@ -1,7 +1,38 @@
 {
   "ok": true,
-  "updated": "2026-11-01T22:21:46.881Z",
+  "updated": "2026-11-02T01:46:27.669Z",
   "posts": [
+    {
+      "urn": "urn:li:activity:7522784866019491840",
+      "title": "#mescwa2026 #miningelectricalsafety #bender #ampcontrol | Ampcontrol",
+      "date": "Sun, 01 Nov 2026 22:21:19 GMT",
+      "copy": "Is your neutral earthing resistor ready when it matters most? A compromised neutral earthing resistor can put electrical safety, critical assets and operational reliability at risk. Watch the Bender Neutral Earthing Resistor (NER) solution in action and see how continuous monitoring can give mining operations greater confidence in the integrity of their electrical protection systems. As the official partner for the Bender NERM range, Ampcontrol l brings together global technology, local mining expertise and ongoing technical support. Attending MESC WA 2026? Visit Stand 3 to explore the technol",
+      "mediaType": "video",
+      "author": "Ampcontrol",
+      "followers": "22,929",
+      "avatar": "https://media.licdn.com/dms/image/v2/C4D0BAQFnNjiNS_pEZw/company-logo_100_100/company-logo_100_100/0/1631337566305?e=2147483647&v=beta&t=k4Ne7StOvA1WbVXIMY9Lhk9lcOs8YxZAGtR_igBWwrg",
+      "age": "3h",
+      "reactions": 9,
+      "reactionTypes": [
+        "LIKE",
+        "PRAISE"
+      ],
+      "poster": "https://media.licdn.com/dms/image/v2/D4E10AQEj9981nNBksA/videocover-high/B4EaGZM6qMJkAs-/0/1793571665845?e=2147483647&v=beta&t=8MQNb6F_bUmy4jJGFA_oUCeZk87UzYsJFFsz2RauDRI",
+      "video": [
+        {
+          "src": "https://dms.licdn.com/playlist/vid/v2/D4E10AQEj9981nNBksA/mp4-720p-30fp-crf28/B4EaGZM6qMJkBo-/0/1793571672071?e=2147483647&v=beta&t=Xtr0VEcgTo8UtOwT7_S3F6Qz_R-ayTszuTWeJKkCKXQ",
+          "type": "video/mp4"
+        },
+        {
+          "src": "https://dms.licdn.com/playlist/vid/v2/D4E10AQEj9981nNBksA/mp4-640p-30fp-crf28/B4EaGZM6qMJkBM-/0/1793571672071?e=2147483647&v=beta&t=19oTSxTpmFU7At2QXYATZP_u5XKndwdPCMnw9tilBUc",
+          "type": "video/mp4"
+        },
+        {
+          "src": "https://dms.licdn.com/playlist/vid/v2/D4E10AQEj9981nNBksA/mp4-360p-30fp-crf28/B4EaGZM6qMJkBk-/0/1793571672071?e=2147483647&v=beta&t=KIRF0ahT3LH3OTThVv7xMSX2ozB5lys5nRtAnYhELmA",
+          "type": "video/mp4"
+        }
+      ]
+    },
     {
       "urn": "urn:li:activity:7521050539606974464",
       "title": "#allenergyau #ampcontrol #renewables #bess #datacentres #microgrids… | Ampcontrol",
@@ -12,7 +43,7 @@
       "followers": "22,929",
       "avatar": "https://media.licdn.com/dms/image/v2/C4D0BAQFnNjiNS_pEZw/company-logo_100_100/company-logo_100_100/0/1631337566305?e=2147483647&v=beta&t=k4Ne7StOvA1WbVXIMY9Lhk9lcOs8YxZAGtR_igBWwrg",
       "age": "4d",
-      "reactions": 90,
+      "reactions": 93,
       "comments": 1,
       "reactionTypes": [
         "LIKE",
@@ -324,39 +355,6 @@
       "pageCount": 3,
       "totalPages": 6,
       "docTitle": "Hydrostatic Testing."
-    },
-    {
-      "urn": "urn:li:activity:7508666437134311425",
-      "title": "Reliable In-Seam Dewatering Solution for Mining Operations | Ampcontrol posted on the topic",
-      "date": "Wed, 23 Sep 2026 23:19:43 GMT",
-      "copy": "From Concept to Critical Infrastructure: Delivering a Reliable In-Seam Dewatering Solution A top-tier mining customer approached us to help develop a reliable in-seam dewatering solution for a critical area of their operation. Drawing on experience from similar projects, we worked closely with the customer to evaluate options and design a fit-for-purpose system that balanced reliability, risk, and budget requirements. The result was a fully engineered solution incorporating pump system infrastructure, including the transformer and substation, with redundancy built in where it mattered most. An",
-      "mediaType": "video",
-      "author": "Ampcontrol",
-      "followers": "22,929",
-      "avatar": "https://media.licdn.com/dms/image/v2/C4D0BAQFnNjiNS_pEZw/company-logo_100_100/company-logo_100_100/0/1631337566305?e=2147483647&v=beta&t=k4Ne7StOvA1WbVXIMY9Lhk9lcOs8YxZAGtR_igBWwrg",
-      "age": "1mo",
-      "reactions": 68,
-      "comments": 1,
-      "reactionTypes": [
-        "LIKE",
-        "PRAISE",
-        "APPRECIATION"
-      ],
-      "poster": "https://media.licdn.com/dms/image/v2/D5610AQGC8mjZ4Nvr6w/videocover-high/B56aDQkOTyLAAs-/0/1790205573601?e=2147483647&v=beta&t=YKtif5QeQljqXLuC4ZyA-dLnRWR-ZPWpMVRQi34fxD4",
-      "video": [
-        {
-          "src": "https://dms.licdn.com/playlist/vid/v2/D5610AQGC8mjZ4Nvr6w/mp4-720p-30fp-crf28/B56aDQkOTyLABo-/0/1790205577977?e=2147483647&v=beta&t=s7CD8rYDPjSYuPXnO0NyntDrgmFbgcTiCBBacmm98eU",
-          "type": "video/mp4"
-        },
-        {
-          "src": "https://dms.licdn.com/playlist/vid/v2/D5610AQGC8mjZ4Nvr6w/mp4-640p-30fp-crf28/B56aDQkOTyLABM-/0/1790205577979?e=2147483647&v=beta&t=WkkwMSoqpjML7fqH7sktpkVin9CWyyfKZ37y2QBdTm0",
-          "type": "video/mp4"
-        },
-        {
-          "src": "https://dms.licdn.com/playlist/vid/v2/D5610AQGC8mjZ4Nvr6w/mp4-360p-30fp-crf28/B56aDQkOTyLABk-/0/1790205577979?e=2147483647&v=beta&t=5H-XC5SGTaNdmA0PS8HBXZnF1Pj9C7xUZmXGCzMkVeI",
-          "type": "video/mp4"
-        }
-      ]
     }
   ]
 }
