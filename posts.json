@@ -1,7 +1,24 @@
 {
   "ok": true,
-  "updated": "2026-11-02T19:44:38.978Z",
+  "updated": "2026-11-03T02:13:12.578Z",
   "posts": [
+    {
+      "urn": "urn:li:activity:7523169835263053824",
+      "title": "#mackaycutters #mensmentalhealth #ampcontrol | Ampcontrol",
+      "date": "Mon, 02 Nov 2026 23:51:02 GMT",
+      "copy": "As sponsors of the Mackay Cutters , Ampcontrol was proud to support the Lads Lunch last Friday, raising awareness and support for men’s mental health. The funds raised through the event support Mackay Cutters, Change the Game mental health initiative, helping deliver mental health education and awareness sessions to schools, sporting clubs and community groups across our region. Regional sporting clubs play an important role in bringing communities together, and we're pleased to support the Mackay Cutters and the positive impact they continue to make both on and off the field. #MackayCutters #",
+      "mediaType": "image",
+      "author": "Ampcontrol",
+      "followers": "22,937",
+      "avatar": "https://media.licdn.com/dms/image/v2/C4D0BAQFnNjiNS_pEZw/company-logo_100_100/company-logo_100_100/0/1631337566305?e=2147483647&v=beta&t=k4Ne7StOvA1WbVXIMY9Lhk9lcOs8YxZAGtR_igBWwrg",
+      "age": "2h",
+      "reactions": 12,
+      "reactionTypes": [
+        "LIKE",
+        "PRAISE"
+      ],
+      "image": "https://media.licdn.com/dms/image/v2/D4E10AQEemYZJOQt3YA/image-shrink_800/B4EaGerGnqIYAg-/0/1793663462344?e=2147483647&v=beta&t=p3oP5UmuV08RFiIH2CthtmYrZRHV5vqwimVlmTwDCSY"
+    },
     {
       "urn": "urn:li:activity:7522784866019491840",
       "title": "#mescwa2026 #miningelectricalsafety #bender #ampcontrol | Ampcontrol",
@@ -11,8 +28,8 @@
       "author": "Ampcontrol",
       "followers": "22,937",
       "avatar": "https://media.licdn.com/dms/image/v2/C4D0BAQFnNjiNS_pEZw/company-logo_100_100/company-logo_100_100/0/1631337566305?e=2147483647&v=beta&t=k4Ne7StOvA1WbVXIMY9Lhk9lcOs8YxZAGtR_igBWwrg",
-      "age": "21h",
-      "reactions": 20,
+      "age": "1d",
+      "reactions": 22,
       "reactionTypes": [
         "LIKE",
         "PRAISE"
@@ -122,7 +139,7 @@
       "followers": "22,937",
       "avatar": "https://media.licdn.com/dms/image/v2/C4D0BAQFnNjiNS_pEZw/company-logo_100_100/company-logo_100_100/0/1631337566305?e=2147483647&v=beta&t=k4Ne7StOvA1WbVXIMY9Lhk9lcOs8YxZAGtR_igBWwrg",
       "age": "2w",
-      "reactions": 14,
+      "reactions": 15,
       "reactionTypes": [
         "LIKE"
       ],
@@ -330,31 +347,6 @@
       "pageCount": 3,
       "totalPages": 6,
       "docTitle": "MV and HV Cable: Sales, Hire and Service"
-    },
-    {
-      "urn": "urn:li:activity:7510228849176072193",
-      "title": "Hydrostatic Pressure Testing for Underground Mining Safety | Ampcontrol posted on the topic",
-      "date": "Mon, 28 Sep 2026 06:48:11 GMT",
-      "copy": "Testing Under Pressure. So Your Team Doesn't Have To. Hydrostatic pressure testing is a critical step in validating the integrity of every flameproof enclosure before deployment. No shortcuts. No assumptions. Just proven performance and a commitment to safety. ✅ Enclosure integrity verified ✅ Critical safety checks completed ✅ Ready for underground operation Every test. Every enclosure. Every time. #MiningSafety #PressureTesting #UndergroundMining",
-      "mediaType": "document",
-      "author": "Ampcontrol",
-      "followers": "22,937",
-      "avatar": "https://media.licdn.com/dms/image/v2/C4D0BAQFnNjiNS_pEZw/company-logo_100_100/company-logo_100_100/0/1631337566305?e=2147483647&v=beta&t=k4Ne7StOvA1WbVXIMY9Lhk9lcOs8YxZAGtR_igBWwrg",
-      "age": "1mo",
-      "reactions": 15,
-      "reactionTypes": [
-        "LIKE",
-        "EMPATHY"
-      ],
-      "image": "https://media.licdn.com/dms/image/v2/D5610AQFroexeKFt9Qg/ads-document-cover-images_480/B56aDmxT78IMAw-/0/1790578083058?e=2147483647&v=beta&t=6KIuob03Bfo11QJmH5nogbH4QU739ugknP4my2wG29M",
-      "pages": [
-        "https://media.licdn.com/dms/image/v2/D5610AQFroexeKFt9Qg/ads-document-cover-images_480/B56aDmxT78IMAw-/0/1790578083058?e=2147483647&v=beta&t=6KIuob03Bfo11QJmH5nogbH4QU739ugknP4my2wG29M",
-        "https://media.licdn.com/dms/image/v2/D5610AQFroexeKFt9Qg/ads-document-cover-images_480/B56aDmxT78IMAw-/1/1790578083058?e=2147483647&v=beta&t=iC0jEyrycozFYo5HFHJc30sdEZJP5UE8SlR5RspCeus",
-        "https://media.licdn.com/dms/image/v2/D5610AQFroexeKFt9Qg/ads-document-cover-images_480/B56aDmxT78IMAw-/2/1790578083058?e=2147483647&v=beta&t=z3LMEYpaoacp0x4R2vb5Sg0B4usW7aKJTmuKWBPAeOo"
-      ],
-      "pageCount": 3,
-      "totalPages": 6,
-      "docTitle": "Hydrostatic Testing."
     }
   ]
 }
