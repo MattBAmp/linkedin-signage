@@ -1,7 +1,38 @@
 {
   "ok": true,
-  "updated": "2026-11-04T03:11:52.829Z",
+  "updated": "2026-11-04T11:30:46.815Z",
   "posts": [
+    {
+      "urn": "urn:li:activity:7523594975004073984",
+      "title": "#highvoltage #cablejointing #electricalinfrastructure #mackay | Ampcontrol",
+      "date": "Wed, 04 Nov 2026 04:00:24 GMT",
+      "copy": "Exothermic welding creates a permanent bond between conductors, forming a low-resistance connection with exceptional electrical and mechanical performance. Captured at our Mackay cable services facility, this video shows the controlled reaction used in high voltage cable jointing and earthing applications, where long-term reliability, conductivity, and connection integrity are critical to network performance. This is one of the many cable services we can provide at Ampcontrol, click here to see the others👉 https://lnkd.in/gFh9igti #HighVoltage #CableJointing #ElectricalInfrastructure #Mackay",
+      "mediaType": "video",
+      "author": "Ampcontrol",
+      "followers": "22,956",
+      "avatar": "https://media.licdn.com/dms/image/v2/C4D0BAQFnNjiNS_pEZw/company-logo_100_100/company-logo_100_100/0/1631337566305?e=2147483647&v=beta&t=k4Ne7StOvA1WbVXIMY9Lhk9lcOs8YxZAGtR_igBWwrg",
+      "age": "7h",
+      "reactions": 10,
+      "reactionTypes": [
+        "LIKE",
+        "INTEREST"
+      ],
+      "poster": "https://media.licdn.com/dms/image/v2/D4E10AQF_A9XpVAMhJQ/videocover-high/B4EaGkttQoKUAo-/0/1793764810078?e=2147483647&v=beta&t=8pxDPe5AyPPiQReU_e572DpjeXRcZYhQ4fxYadQcJms",
+      "video": [
+        {
+          "src": "https://dms.licdn.com/playlist/vid/v2/D4E10AQF_A9XpVAMhJQ/mp4-720p-30fp-crf28/B4EaGkttQoKUBk-/0/1793764815088?e=2147483647&v=beta&t=MOhxuF-H0AxS0tz_GDTtQREz__unedqEEsOAy9T_nIE",
+          "type": "video/mp4"
+        },
+        {
+          "src": "https://dms.licdn.com/playlist/vid/v2/D4E10AQF_A9XpVAMhJQ/mp4-640p-30fp-crf28/B4EaGkttQoKUBI-/0/1793764815088?e=2147483647&v=beta&t=xa_Fl8yd--DvKSQUqOEIKRZPJU0j65I2YQDhrNEFZ5o",
+          "type": "video/mp4"
+        },
+        {
+          "src": "https://dms.licdn.com/playlist/vid/v2/D4E10AQF_A9XpVAMhJQ/mp4-360p-30fp-crf28/B4EaGkttQoKUBg-/0/1793764815088?e=2147483647&v=beta&t=ffCAKyBjSy2Xae-ncZfW_V3wIGUdVzgG5u0S6M0DgCs",
+          "type": "video/mp4"
+        }
+      ]
+    },
     {
       "urn": "urn:li:activity:7523169835263053824",
       "title": "#mackaycutters #mensmentalhealth #ampcontrol | Ampcontrol",
@@ -9,10 +40,10 @@
       "copy": "As sponsors of the Mackay Cutters , Ampcontrol was proud to support the Lads Lunch last Friday, raising awareness and support for men’s mental health. The funds raised through the event support Mackay Cutters, Change the Game mental health initiative, helping deliver mental health education and awareness sessions to schools, sporting clubs and community groups across our region. Regional sporting clubs play an important role in bringing communities together, and we're pleased to support the Mackay Cutters and the positive impact they continue to make both on and off the field. #MackayCutters #",
       "mediaType": "image",
       "author": "Ampcontrol",
-      "followers": "22,950",
+      "followers": "22,956",
       "avatar": "https://media.licdn.com/dms/image/v2/C4D0BAQFnNjiNS_pEZw/company-logo_100_100/company-logo_100_100/0/1631337566305?e=2147483647&v=beta&t=k4Ne7StOvA1WbVXIMY9Lhk9lcOs8YxZAGtR_igBWwrg",
       "age": "1d",
-      "reactions": 37,
+      "reactions": 40,
       "comments": 2,
       "reactionTypes": [
         "LIKE",
@@ -28,7 +59,7 @@
       "copy": "Is your neutral earthing resistor ready when it matters most? A compromised neutral earthing resistor can put electrical safety, critical assets and operational reliability at risk. Watch the Bender Neutral Earthing Resistor (NER) solution in action and see how continuous monitoring can give mining operations greater confidence in the integrity of their electrical protection systems. As the official partner for the Bender NERM range, Ampcontrol l brings together global technology, local mining expertise and ongoing technical support. Attending MESC WA 2026? Visit Stand 3 to explore the technol",
       "mediaType": "video",
       "author": "Ampcontrol",
-      "followers": "22,950",
+      "followers": "22,956",
       "avatar": "https://media.licdn.com/dms/image/v2/C4D0BAQFnNjiNS_pEZw/company-logo_100_100/company-logo_100_100/0/1631337566305?e=2147483647&v=beta&t=k4Ne7StOvA1WbVXIMY9Lhk9lcOs8YxZAGtR_igBWwrg",
       "age": "2d",
       "reactions": 22,
@@ -59,9 +90,9 @@
       "copy": "Day 1 at All Energy Melbourne is coming to a close⚡ It's been great to connect with so many people across the energy industry and have conversations about the challenges and opportunities shaping Australia's energy future. If you missed us today, the Ampcontrol team will be back again tomorrow at Stand E143 to chat all things energy, batteries, renewables, data centres, and the critical infrastructure powering Australia. #AllEnergyAU #Ampcontrol #Renewables #BESS #DataCentres #Microgrids #Substations",
       "mediaType": "image",
       "author": "Ampcontrol",
-      "followers": "22,950",
+      "followers": "22,956",
       "avatar": "https://media.licdn.com/dms/image/v2/C4D0BAQFnNjiNS_pEZw/company-logo_100_100/company-logo_100_100/0/1631337566305?e=2147483647&v=beta&t=k4Ne7StOvA1WbVXIMY9Lhk9lcOs8YxZAGtR_igBWwrg",
-      "age": "6d",
+      "age": "1w",
       "reactions": 99,
       "comments": 1,
       "reactionTypes": [
@@ -78,7 +109,7 @@
       "copy": "See you at All Energy 2026! ⚡ We'll be at stand E143 throughout the event talking all things energy, from data centres and substations to renewables, battery storage, and microgrids. We're looking forward to connecting with industry peers, customers, and partners to discuss the opportunities and challenges shaping the future of energy. #allenergy #energy #datacentre",
       "mediaType": "image",
       "author": "Ampcontrol",
-      "followers": "22,950",
+      "followers": "22,956",
       "avatar": "https://media.licdn.com/dms/image/v2/C4D0BAQFnNjiNS_pEZw/company-logo_100_100/company-logo_100_100/0/1631337566305?e=2147483647&v=beta&t=k4Ne7StOvA1WbVXIMY9Lhk9lcOs8YxZAGtR_igBWwrg",
       "age": "1w",
       "reactions": 29,
@@ -96,7 +127,7 @@
       "copy": "Research today. Safer mines tomorrow. At this year's MESC WA 2026, we're proud to see Aaron Matthews, R&D Engineer at ResTech, sharing research that addresses emerging electrical safety considerations across modern mining operations. 🎤 Aaron's presentation: Electromagnetic Field Exposure in Australian Mines for People with Electronic Medical Devices will explore how increasing electrification within mining environments may impact workers who rely on electronic medical devices, and the considerations required to support safe and inclusive workplaces. The presentation reflects the importance of",
       "mediaType": "image",
       "author": "Ampcontrol",
-      "followers": "22,950",
+      "followers": "22,956",
       "avatar": "https://media.licdn.com/dms/image/v2/C4D0BAQFnNjiNS_pEZw/company-logo_100_100/company-logo_100_100/0/1631337566305?e=2147483647&v=beta&t=k4Ne7StOvA1WbVXIMY9Lhk9lcOs8YxZAGtR_igBWwrg",
       "age": "1w",
       "reactions": 12,
@@ -114,7 +145,7 @@
       "copy": "MORE THAN REPAIRS. ONE STOP SHOP. When equipment goes down, you don't always need a full overhaul. Sometimes you need the right component, the right expertise and a fast turnaround to get back up and running. From replacement parts and service exchange components to repairs, engineering support and equipment upgrades, our Mining Machinery team helps minimise downtime and keep your operation moving. ✅ Parts & Components ✅ Repairs & Overhauls ✅ Engineering Support ✅ Compliance Services ✅ Equipment Upgrades Fast response. Reduced downtime. One trusted partner for the life of your equipment. Talk ",
       "mediaType": "document",
       "author": "Ampcontrol",
-      "followers": "22,950",
+      "followers": "22,956",
       "avatar": "https://media.licdn.com/dms/image/v2/C4D0BAQFnNjiNS_pEZw/company-logo_100_100/company-logo_100_100/0/1631337566305?e=2147483647&v=beta&t=k4Ne7StOvA1WbVXIMY9Lhk9lcOs8YxZAGtR_igBWwrg",
       "age": "2w",
       "reactions": 20,
@@ -139,7 +170,7 @@
       "copy": "We're heading to MESC WA 2026. Join the Ampcontrol team at Stand 3 during the Mine Electrical Safety Association event from 17-18 November in Perth. As a trusted partner to the mining industry, we're helping operations power their mission-critical assets and infrastructure safely, reliably and efficiently. This year, we're proud to be showcasing our partnership with Bender and the NERM (Neutral Earthing Resistor Monitors) range, supporting electrical safety, asset protection and operational reliability across mining operations. Whether you're planning a new project, looking to improve electric",
       "mediaType": "image",
       "author": "Ampcontrol",
-      "followers": "22,950",
+      "followers": "22,956",
       "avatar": "https://media.licdn.com/dms/image/v2/C4D0BAQFnNjiNS_pEZw/company-logo_100_100/company-logo_100_100/0/1631337566305?e=2147483647&v=beta&t=k4Ne7StOvA1WbVXIMY9Lhk9lcOs8YxZAGtR_igBWwrg",
       "age": "2w",
       "reactions": 15,
@@ -155,7 +186,7 @@
       "copy": "Conventional isolated power systems tell you there's a problem. Smart isolated power systems help you pinpoint where the problem is. With real-time monitoring, automatic identification, and plain-language alarm guidance, operating rooms and ICU’s can resolve issues faster while reducing pressure on clinical and technical teams. In critical care environments, better visibility means safer operations, less downtime, and greater peace of mind. Read the full abstract from a recent presentation at IHEA in Brisbane here👉 https://lnkd.in/dizes8G9 #ElectricalSafety #HealthcareTechnology #HospitalEngi",
       "mediaType": "image",
       "author": "Ampcontrol",
-      "followers": "22,950",
+      "followers": "22,956",
       "avatar": "https://media.licdn.com/dms/image/v2/C4D0BAQFnNjiNS_pEZw/company-logo_100_100/company-logo_100_100/0/1631337566305?e=2147483647&v=beta&t=k4Ne7StOvA1WbVXIMY9Lhk9lcOs8YxZAGtR_igBWwrg",
       "age": "2w",
       "reactions": 14,
@@ -173,7 +204,7 @@
       "copy": "OFF THE SHELF. TOP SHELF PERFORMANCE. We stock critical spare parts and service exchange components to help keep your operation running, including: ✓ Continuous Miners ✓ Waracars ✓ Joy Shuttle Cars ✓ And more One call connects you to our 24/7 support team. Phone 1300 267 373. #UndergroundMining #MiningMachinery #CriticalSpares",
       "mediaType": "document",
       "author": "Ampcontrol",
-      "followers": "22,950",
+      "followers": "22,956",
       "avatar": "https://media.licdn.com/dms/image/v2/C4D0BAQFnNjiNS_pEZw/company-logo_100_100/company-logo_100_100/0/1631337566305?e=2147483647&v=beta&t=k4Ne7StOvA1WbVXIMY9Lhk9lcOs8YxZAGtR_igBWwrg",
       "age": "3w",
       "reactions": 17,
@@ -198,7 +229,7 @@
       "copy": "Behind every data centre is a power system that simply has to work. Reliable electrical infrastructure keeps critical operations running, supports growth and helps ensure uptime. We're helping deliver the power solutions that data centres depend on every day. Find out more 👉 https://lnkd.in/gzBPRDy8 #DataCentres #ReliablePower",
       "mediaType": "video",
       "author": "Ampcontrol",
-      "followers": "22,950",
+      "followers": "22,956",
       "avatar": "https://media.licdn.com/dms/image/v2/C4D0BAQFnNjiNS_pEZw/company-logo_100_100/company-logo_100_100/0/1631337566305?e=2147483647&v=beta&t=k4Ne7StOvA1WbVXIMY9Lhk9lcOs8YxZAGtR_igBWwrg",
       "age": "3w",
       "reactions": 22,
@@ -229,7 +260,7 @@
       "copy": "The energy transition depends on more than renewable generation. It depends on the infrastructure that makes it reliable. Microgrids and DC battery energy storage systems work together to deliver stable, resilient power for remote operations, helping sites integrate renewables while maintaining operational performance. Learn more about the technology behind a reliable energy transition 👉 https://lnkd.in/g-ch2gnt #EnergyTransition #Microgrids #BatteryEnergyStorage",
       "mediaType": "video",
       "author": "Ampcontrol",
-      "followers": "22,950",
+      "followers": "22,956",
       "avatar": "https://media.licdn.com/dms/image/v2/C4D0BAQFnNjiNS_pEZw/company-logo_100_100/company-logo_100_100/0/1631337566305?e=2147483647&v=beta&t=k4Ne7StOvA1WbVXIMY9Lhk9lcOs8YxZAGtR_igBWwrg",
       "age": "3w",
       "reactions": 30,
@@ -261,7 +292,7 @@
       "copy": "Engineered underground dewatering solution for coal mining operations. For a recent in-seam dewatering project, we partnered with a Tier 1 mining customer to design and deliver a complete underground pumping solution, including an 11kV/1.05kV substation and Flameproof Ex d pump starter. Purpose-built for a critical mining application, the solution provides the reliability and redundancy needed to support safe, continuous operations underground. 👉 Read the case study to see how early collaboration and tailored engineering helped deliver the right outcome for this complex underground applicatio",
       "mediaType": "document",
       "author": "Ampcontrol",
-      "followers": "22,950",
+      "followers": "22,956",
       "avatar": "https://media.licdn.com/dms/image/v2/C4D0BAQFnNjiNS_pEZw/company-logo_100_100/company-logo_100_100/0/1631337566305?e=2147483647&v=beta&t=k4Ne7StOvA1WbVXIMY9Lhk9lcOs8YxZAGtR_igBWwrg",
       "age": "4w",
       "reactions": 16,
@@ -286,7 +317,7 @@
       "copy": "See you at All Energy 2026! ⚡ We're heading to Melbourne for All Energy 2026 and we'd love to connect. Visit the Ampcontrol team at Stand E143 to explore how we're helping power critical operations through electrification, renewable energy, critical power, and energy infrastructure solutions. Stop by for a chat and discover what's possible on the 28 and 29 of October. You can learn more about what we will be exhibiting here: https://lnkd.in/gfVap6Nd #AllEnergy2026 #Ampcontrol #Electrification #RenewableEnergy",
       "mediaType": "image",
       "author": "Ampcontrol",
-      "followers": "22,950",
+      "followers": "22,956",
       "avatar": "https://media.licdn.com/dms/image/v2/C4D0BAQFnNjiNS_pEZw/company-logo_100_100/company-logo_100_100/0/1631337566305?e=2147483647&v=beta&t=k4Ne7StOvA1WbVXIMY9Lhk9lcOs8YxZAGtR_igBWwrg",
       "age": "4w",
       "reactions": 24,
@@ -302,7 +333,7 @@
       "copy": "Our robotic arm 🤖 lends an extra hand to our Mining Machinery team, helping manufacture critical spare parts when our customers need them. With the ability to operate day and night, this advanced machinery helps us maintain stock levels, respond to larger orders and reduce the impact of supply chain disruptions. It also gives us the flexibility to custom manufacture parts for specific applications. Learn where these parts are used 👉 https://lnkd.in/gG3s_ign #RoboticAutomation #CriticalSpares #AustralianManufacturing",
       "mediaType": "video",
       "author": "Ampcontrol",
-      "followers": "22,950",
+      "followers": "22,956",
       "avatar": "https://media.licdn.com/dms/image/v2/C4D0BAQFnNjiNS_pEZw/company-logo_100_100/company-logo_100_100/0/1631337566305?e=2147483647&v=beta&t=k4Ne7StOvA1WbVXIMY9Lhk9lcOs8YxZAGtR_igBWwrg",
       "age": "1mo",
       "reactions": 37,
@@ -326,30 +357,6 @@
           "type": "video/mp4"
         }
       ]
-    },
-    {
-      "urn": "urn:li:activity:7510849175261978624",
-      "title": "MV and HV Cable: Sales, Hire and Service | Ampcontrol",
-      "date": "Tue, 29 Sep 2026 23:53:08 GMT",
-      "copy": "From fixed reticulation to machines on the move, we sell and hire medium and high-voltage cable for short and long-term requirements. Swipe through the range, including 11 kV paper-lead insulated, PILCSWA, XLPE, trailing and reeling cables, along with the accessories to connect it all. And when your cable needs attention, our workshops in NSW, QLD, and WA inspect, repair, and test it to the relevant AS/NZS standards, with field service crews available for on-site fault location and repairs. Explore our cable services 👉 https://bit.ly/4AF03H5 #HighVoltage #CableServices",
-      "mediaType": "document",
-      "author": "Ampcontrol",
-      "followers": "22,950",
-      "avatar": "https://media.licdn.com/dms/image/v2/C4D0BAQFnNjiNS_pEZw/company-logo_100_100/company-logo_100_100/0/1631337566305?e=2147483647&v=beta&t=k4Ne7StOvA1WbVXIMY9Lhk9lcOs8YxZAGtR_igBWwrg",
-      "age": "1mo",
-      "reactions": 17,
-      "reactionTypes": [
-        "LIKE"
-      ],
-      "image": "https://media.licdn.com/dms/image/v2/D5610AQHlwxSC9s354w/ads-document-cover-images_480/B56aDvlgarJIBs-/0/1790725983255?e=2147483647&v=beta&t=O5jnnleXS6TYUeTwVigU21ReWn8294xZQcUpHklimLU",
-      "pages": [
-        "https://media.licdn.com/dms/image/v2/D5610AQHlwxSC9s354w/ads-document-cover-images_480/B56aDvlgarJIBs-/0/1790725983255?e=2147483647&v=beta&t=O5jnnleXS6TYUeTwVigU21ReWn8294xZQcUpHklimLU",
-        "https://media.licdn.com/dms/image/v2/D5610AQHlwxSC9s354w/ads-document-cover-images_480/B56aDvlgarJIBs-/1/1790725983255?e=2147483647&v=beta&t=0W5UrR91cXUqEExw8AB97X01Xmyjv_SxLQFX-RvCm80",
-        "https://media.licdn.com/dms/image/v2/D5610AQHlwxSC9s354w/ads-document-cover-images_480/B56aDvlgarJIBs-/2/1790725983255?e=2147483647&v=beta&t=aEuVDKUxgIPK-HsyWilAnT_Zzw-kOikneohMbgXTJ60"
-      ],
-      "pageCount": 3,
-      "totalPages": 6,
-      "docTitle": "MV and HV Cable: Sales, Hire and Service"
     }
   ]
 }
